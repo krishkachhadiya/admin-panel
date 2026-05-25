@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Super Admin",
+    "email": "admin@gmail.com",
+    "password": "123456",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Staff User",
+    "email": "staff@gmail.com",
+    "password": "123",
+    "role": "staff"
+  },
+  {
+    "id": 3,
+    "name": "Manager User",
+    "email": "manager@gmail.com",
+    "password": "123456",
+    "role": "manager"
+  },
+  {
+    "id": 1779695814702,
+    "name": "abc",
+    "email": "abc@gmail.com",
+    "password": "123",
+    "role": "staff"
+  }
+]
