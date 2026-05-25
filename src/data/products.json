@@ -1,0 +1,105 @@
+[
+  {
+    "id": 1779261233614,
+    "title": "iPhone 16 Pro",
+    "category": "Electronics",
+    "description": "Latest Apple Phone 16 ",
+    "metaTitle": "Buy iPhone 15",
+    "metaDescription": "Apple iPhone 15 details",
+    "status": "active",
+    "images": [
+      "/uploads/1779366221434-gm33.jpg"
+    ],
+    "specifications": [
+      {
+        "key": "RAM",
+        "value": "8GB"
+      },
+      {
+        "key": "Storage",
+        "value": "256GB"
+      }
+    ],
+    "createdAt": "2026-05-20T07:13:53.614Z",
+    "updatedAt": "2026-05-22T10:36:24.136Z",
+    "subcategory": "Mobile"
+  },
+  {
+    "id": 1779339511346,
+    "title": "The Home Centre Lexus Chest of 4 Drawers",
+    "category": "Furniture",
+    "description": " brown perfectly meets the description for a durable and stylish storage unit",
+    "metaTitle": "Buy Home Centre Lexus 4-Drawer Chest | Brown Storage Drawers",
+    "metaDescription": "Upgrade your bedroom with the Home Centre Lexus Chest of Drawers in brown. Featuring 4 spacious drawers and a durable engineered wood design with a scratch-resistant melamine finish, it is the perfect space-saving storage solution. Shop now for organized, clutter-free living!",
+    "status": "active",
+    "images": [
+      "/uploads/1779365597397-sofa.jpg"
+    ],
+    "specifications": [
+      "color:brown",
+      "type:wooden"
+    ],
+    "createdAt": "2026-05-21T04:58:31.346Z",
+    "updatedAt": "2026-05-22T05:59:44.931Z",
+    "subcategory": "Bed"
+  },
+  {
+    "id": 1779350077474,
+    "title": "Samsung Galaxy S22",
+    "description": "The Samsung Galaxy S22 is a compact 2022 flagship featuring a 6.1-inch 120Hz AMOLED display, Snapdragon 8 Gen 1/Exynos 2200 processor, and a 50MP triple camera system",
+    "metaTitle": "Buy Samsung Galaxy S22 5G | Best Price & Offers",
+    "metaDescription": " Experience epic Nightography, a 4nm processor, and an all-day battery with the Samsung Galaxy S22 5G. Compare prices and grab the best offers online.",
+    "status": "active",
+    "images": [
+      "/uploads/1779366199279-s22ultra.png"
+    ],
+    "specifications": [
+      "ROM:125",
+      "RAM:8",
+      ""
+    ],
+    "createdAt": "2026-05-21T07:54:37.474Z",
+    "category": "Electronics",
+    "updatedAt": "2026-05-22T10:36:52.955Z",
+    "subcategory": "Mobile"
+  },
+  {
+    "id": 1779362315603,
+    "title": "iPhone 16 Pro1",
+    "description": "Latest Apple Phone 16 ",
+    "metaTitle": "Buy iPhone 15",
+    "metaDescription": "Apple iPhone 15 details",
+    "status": "active",
+    "images": [
+      "/uploads/1779362284150-iphone.jpg"
+    ],
+    "specifications": [
+      "[\n  {\n    \"key\": \"RAM\"",
+      "\"value\": \"8GB\"\n  }",
+      "{\n    \"key\": \"Storage\"",
+      "\"value\": \"256GB\"\n  }\n]"
+    ],
+    "createdAt": "2026-05-21T11:18:35.603Z",
+    "category": "Electronics",
+    "updatedAt": "2026-05-22T10:37:07.544Z",
+    "subcategory": "Mobile"
+  },
+  {
+    "id": 1779365781214,
+    "title": "bed",
+    "description": "bed",
+    "metaTitle": "",
+    "metaDescription": "",
+    "status": "inactive",
+    "images": [
+      "/uploads/1779365772640-bed.jpg"
+    ],
+    "specifications": [
+      "kingsizebed"
+    ],
+    "createdAt": "2026-05-21T12:16:21.214Z",
+    "subcategory": "Bed",
+    "category": "Furniture",
+    "updatedAt": "2026-05-25T11:39:20.209Z"
+  }
+]

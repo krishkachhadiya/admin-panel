@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1,
+    "name": "staff",
+    "permissions": {
+      "products": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "categories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "subcategories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "admin",
+    "permissions": {
+      "products": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "categories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "subcategories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "cms": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "manager",
+    "permissions": {
+      "products": {
+        "create": false,
+        "edit": true,
+        "delete": true
+      },
+      "categories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "subcategories": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      },
+      "cms": {
+        "create": true,
+        "edit": true,
+        "delete": true
+      }
+    }
+  }
+]

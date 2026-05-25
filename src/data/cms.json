@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "About Us",
+    "slug": "about-us",
+    "metaTitle": "About Us",
+    "metaDescription": "<p>About company</p>",
+    "content": "<h1>About Us</h1><p>Content here</p>",
+    "status": "active"
+  },
+  {
+    "id": 1779702198820,
+    "title": "abc",
+    "slug": "dsfsdf",
+    "metaTitle": "dvsd",
+    "metaDescription": "fdsfsd",
+    "content": "fsfdfsds",
+    "status": "active"
+  }
+]
