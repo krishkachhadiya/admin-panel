@@ -120,19 +120,29 @@ export default function AddAdminPage() {
       const data =
         await response.json();
 
+      // ERROR
 
-
-
-      if (data.success) {
+      if (!data.success) {
 
         alert(
-          "User Added Successfully"
+          data.message
         );
 
-        router.push(
-          "/admin/admins"
-        );
+        return;
       }
+
+
+
+
+      // SUCCESS
+
+      alert(
+        "User Added Successfully"
+      );
+
+      router.push(
+        "/admin/admins"
+      );
 
     } catch (error) {
 
