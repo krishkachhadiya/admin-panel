@@ -28,7 +28,23 @@ export default function AdminLayout({
     setAdmin,
   ] = useState(null);
 
+const protectedRoutes = {
 
+  "/admin/products":
+    "products",
+
+  "/admin/categories":
+    "categories",
+
+  "/admin/cms":
+    "cms",
+
+  "/admin/admins":
+    "users",
+
+  "/admin/roles":
+    "roles",
+};
 
 
   // ======================
@@ -350,7 +366,45 @@ export default function AdminLayout({
     );
   }
 
+if (
+  admin &&
+  admin.role !==
+    "admin"
+) {
 
+  const currentModule = protectedRoutes[pathname];
+
+  if (currentModule) {
+
+    const permissions = admin?.permissions?.[currentModule];
+
+    const hasAccess =
+
+      permissions
+        ?.create ||
+
+      permissions
+        ?.edit ||
+
+      permissions
+        ?.delete;
+
+    if (!hasAccess) {
+
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+
+          <h1 className="text-2xl font-bold text-red-500">
+
+            Access Denied
+
+          </h1>
+
+        </div>
+      );
+    }
+  }
+}
 
 
   // ======================

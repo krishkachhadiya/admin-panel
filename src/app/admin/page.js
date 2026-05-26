@@ -17,7 +17,6 @@ export default function AdminDashboard() {
     setCategories,
   ] = useState([]);
 
-
   // ======================
   // FETCH DATA
   // ======================
@@ -98,100 +97,110 @@ export default function AdminDashboard() {
         "inactive"
     );
 
-
   // ======================
   // UI
   // ======================
 
   return (
-    <div>
 
-      
-      {/* Header */}
+    <div className="w-full">
 
-      <div className="mb-10">
+      {/* HEADER */}
 
-        <h1 className="text-5xl font-bold text-gray-900">
+      <div className="mb-6 sm:mb-8 lg:mb-10">
+
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+
           Dashboard
+
         </h1>
 
-        <p className="text-gray-500 mt-3 text-lg">
+        <p className="text-gray-500 mt-2 sm:mt-3 text-sm sm:text-base lg:text-lg">
+
           Welcome to Admin Panel
+
         </p>
 
       </div>
 
+      {/* CARDS */}
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
 
+        {/* TOTAL PRODUCTS */}
 
-      {/* Cards */}
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-8">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          <h2 className="text-gray-500 text-sm sm:text-base lg:text-lg">
 
-
-
-
-        {/* Total Products */}
-
-        <div className="bg-white rounded-3xl shadow-lg p-8">
-
-          <h2 className="text-gray-500 text-lg">
             Total Products
+
           </h2>
 
-          <h1 className="text-5xl font-bold mt-4 text-black">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black break-words">
+
             {products.length}
+
           </h1>
 
         </div>
 
-        {/* Active Products */}
+        {/* ACTIVE PRODUCTS */}
 
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-8">
 
-          <h2 className="text-gray-500 text-lg">
+          <h2 className="text-gray-500 text-sm sm:text-base lg:text-lg">
+
             Active Products
+
           </h2>
 
-          <h1 className="text-5xl font-bold mt-4 text-green-600">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-green-600 break-words">
+
             {
               activeProducts.length
             }
+
           </h1>
 
         </div>
 
-        {/* Inactive Products */}
+        {/* INACTIVE PRODUCTS */}
 
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-8">
 
-          <h2 className="text-gray-500 text-lg">
+          <h2 className="text-gray-500 text-sm sm:text-base lg:text-lg">
+
             Inactive Products
+
           </h2>
 
-          <h1 className="text-5xl font-bold mt-4 text-red-500">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-red-500 break-words">
+
             {
               inactiveProducts.length
             }
+
           </h1>
 
         </div>
 
+        {/* TOTAL CATEGORIES */}
 
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-8">
 
+          <h2 className="text-gray-500 text-sm sm:text-base lg:text-lg">
 
-        {/* Categories */}
-
-        <div className="bg-white rounded-3xl shadow-lg p-8">
-
-          <h2 className="text-gray-500 text-lg">
             Total Categories
+
           </h2>
 
-          <h1 className="text-5xl font-bold mt-4 text-black">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black break-words">
+
             {
               categories.length
             }
+
           </h1>
 
         </div>
