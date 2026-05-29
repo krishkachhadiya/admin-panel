@@ -5,21 +5,50 @@ import {
   writeData,
 } from "@/lib/filehandler";
 
+
+
+
 // ======================
 // GET PRODUCTS
 // ======================
 
 export async function GET() {
 
-  const products =
-    readData(
-      "products.json"
+  try {
+
+    const products =
+      readData(
+        "products.json"
+      );
+
+
+
+
+    return NextResponse.json(
+      products
     );
 
-  return NextResponse.json(
-    products
-  );
+  } catch (error) {
+
+    console.log(error);
+
+
+
+
+    return NextResponse.json(
+      {
+        success: false,
+
+        message:
+          "Server Error",
+      },
+      { status: 500 }
+    );
+  }
 }
+
+
+
 
 // ======================
 // ADD PRODUCT
@@ -34,15 +63,24 @@ export async function POST(
     const body =
       await req.json();
 
+
+
+
     let {
 
       title,
+
+      slug,
 
       description,
 
       metaTitle,
 
       metaDescription,
+
+      category,
+
+      subcategory,
 
       status,
 
@@ -51,6 +89,9 @@ export async function POST(
       specifications,
 
     } = body;
+
+
+
 
     // ======================
     // VALIDATION
@@ -71,12 +112,20 @@ export async function POST(
       );
     }
 
+
+
+
     // ======================
     // CLEAN VALUES
     // ======================
 
     title =
       title.trim();
+
+    slug =
+      slug?.trim();
+
+
 
 
     // ======================
@@ -87,6 +136,9 @@ export async function POST(
       readData(
         "products.json"
       );
+
+
+
 
     // ======================
     // CHECK EXISTS
@@ -101,6 +153,9 @@ export async function POST(
 
           title.toLowerCase()
       );
+
+
+
 
     if (
       alreadyExists
@@ -117,15 +172,21 @@ export async function POST(
       );
     }
 
+
+
+
     // ======================
     // CREATE PRODUCT
     // ======================
 
     const newProduct = {
 
-      id: Date.now(),
+      id:
+        Date.now(),
 
       title,
+
+      slug,
 
       description:
         description || "",
@@ -135,6 +196,12 @@ export async function POST(
 
       metaDescription:
         metaDescription || "",
+
+      category:
+        category || "",
+
+      subcategory:
+        subcategory || "",
 
       status:
         status || "active",
@@ -147,7 +214,13 @@ export async function POST(
 
       createdAt:
         new Date().toISOString(),
+
+      updatedAt:
+        new Date().toISOString(),
     };
+
+
+
 
     // ======================
     // PUSH PRODUCT
@@ -157,6 +230,9 @@ export async function POST(
       newProduct
     );
 
+
+
+
     // ======================
     // SAVE FILE
     // ======================
@@ -165,6 +241,9 @@ export async function POST(
       "products.json",
       products
     );
+
+
+
 
     // ======================
     // RESPONSE
@@ -184,6 +263,9 @@ export async function POST(
   } catch (error) {
 
     console.log(error);
+
+
+
 
     return NextResponse.json(
       {
