@@ -39,9 +39,6 @@ select {
 input[type="checkbox"] {
   cursor: pointer;
 }
-* {
-  scroll-behavior: smooth;
-}
 
 button:disabled {
   cursor: not-allowed;
