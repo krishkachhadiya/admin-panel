@@ -122,14 +122,52 @@ export async function PUT(
     products[
       productIndex
     ] = {
+
       ...products[
-        productIndex
+      productIndex
       ],
 
       ...body,
 
+       metaTitle:
+
+        body.metaTitle
+
+          ?.replace(
+            /<[^>]*>/g,
+            " "
+          )
+
+          ?.replace(
+            /\s+/g,
+            " "
+          )
+
+          ?.trim() ||
+
+        "",
+
+      metaDescription:
+
+        body.metaDescription
+
+          ?.replace(
+            /<[^>]*>/g,
+            " "
+          )
+
+          ?.replace(
+            /\s+/g,
+            " "
+          )
+
+          ?.trim() ||
+
+        "",
+
       updatedAt:
         new Date().toISOString(),
+
     };
 
 
@@ -155,7 +193,7 @@ export async function PUT(
 
       product:
         products[
-          productIndex
+        productIndex
         ],
     });
 

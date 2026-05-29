@@ -192,10 +192,34 @@ export async function POST(
         description || "",
 
       metaTitle:
-        metaTitle || "",
+        metaTitle
+          ?.replace(
+            /<[^>]*>/g,
+            " "
+          )
+
+          ?.replace(
+            /\s+/g,
+            " "
+          )
+
+          ?.trim() || "",
 
       metaDescription:
-        metaDescription || "",
+
+        metaDescription
+
+          ?.replace(
+            /<[^>]*>/g,
+            " "
+          )
+
+          ?.replace(
+            /\s+/g,
+            " "
+          )
+
+          ?.trim() || "",
 
       category:
         category || "",
