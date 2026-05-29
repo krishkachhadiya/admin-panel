@@ -53,6 +53,18 @@ export default function ProductsPage() {
 
 
 
+  // ======================
+  // PAGINATION
+  // ======================
+
+  const [page, setPage] =
+    useState(1);
+
+  const [limit, setLimit] =
+    useState(10);
+
+
+
 
   // ======================
   // FETCH PRODUCTS
@@ -115,6 +127,36 @@ export default function ProductsPage() {
 
 
   // ======================
+  // FETCH PAGINATION
+  // ======================
+
+  async function fetchPagination() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/pagination"
+        );
+
+      const result =
+        await response.json();
+
+      setLimit(
+        result.data.products || 10
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  }
+
+
+
+
+  // ======================
   // LOAD DATA
   // ======================
 
@@ -123,6 +165,8 @@ export default function ProductsPage() {
     fetchProducts();
 
     fetchCategories();
+
+    fetchPagination();
 
 
 
@@ -227,7 +271,7 @@ export default function ProductsPage() {
 
               status:
                 product.status ===
-                "active"
+                  "active"
 
                   ? "inactive"
 
@@ -276,8 +320,15 @@ export default function ProductsPage() {
 
 
   const filteredSubcategories =
-    selectedCategoryData
-      ?.subcategories || [];
+    categories.filter(
+      (item) =>
+        String(
+          item.parent
+        ) ===
+        String(
+          selectedCategoryData?.id
+        )
+    );
 
 
 
@@ -294,11 +345,11 @@ export default function ProductsPage() {
           selectedCategory
 
             ? product.category
-                ?.trim()
-                .toLowerCase() ===
-              selectedCategory
-                ?.trim()
-                .toLowerCase()
+              ?.trim()
+              .toLowerCase() ===
+            selectedCategory
+              ?.trim()
+              .toLowerCase()
 
             : true;
 
@@ -309,11 +360,11 @@ export default function ProductsPage() {
           selectedSubcategory
 
             ? product.subcategory
-                ?.trim()
-                .toLowerCase() ===
-              selectedSubcategory
-                ?.trim()
-                .toLowerCase()
+              ?.trim()
+              .toLowerCase() ===
+            selectedSubcategory
+              ?.trim()
+              .toLowerCase()
 
             : true;
 
@@ -325,6 +376,33 @@ export default function ProductsPage() {
           subcategoryMatch
         );
       }
+    );
+
+
+
+
+  // ======================
+  // PAGINATION LOGIC
+  // ======================
+
+  const start =
+    (page - 1) * limit;
+
+  const end =
+    page * limit;
+
+  const paginatedProducts =
+    filteredProducts.slice(
+      start,
+      end
+    );
+
+
+
+  const totalPages =
+    Math.ceil(
+      filteredProducts.length /
+      limit
     );
 
 
@@ -393,20 +471,20 @@ export default function ProductsPage() {
 
         ) && (
 
-          <button
-            onClick={() =>
-              router.push(
-                "/admin/products/add"
-              )
-            }
-            className="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
-          >
+            <button
+              onClick={() =>
+                router.push(
+                  "/admin/products/add"
+                )
+              }
+              className="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
+            >
 
-            Add Product
+              Add Product
 
-          </button>
+            </button>
 
-        )}
+          )}
 
       </div>
 
@@ -441,6 +519,8 @@ export default function ProductsPage() {
               setSelectedSubcategory(
                 ""
               );
+
+              setPage(1);
             }}
             className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
           >
@@ -449,22 +529,28 @@ export default function ProductsPage() {
               All Categories
             </option>
 
-            {categories.map(
-              (category) => (
+            {
+              categories
+                .filter(
+                  (item) =>
+                    item.parent === null
+                )
+                .map(
+                  (category) => (
 
-                <option
-                  key={category.id}
-                  value={
-                    category.title
-                  }
-                >
+                    <option
+                      key={category.id}
+                      value={
+                        category.title
+                      }
+                    >
 
-                  {category.title}
+                      {category.title}
 
-                </option>
+                    </option>
 
-              )
-            )}
+                  )
+                )}
 
           </select>
 
@@ -487,11 +573,14 @@ export default function ProductsPage() {
             value={
               selectedSubcategory
             }
-            onChange={(e) =>
+            onChange={(e) => {
+
               setSelectedSubcategory(
                 e.target.value
-              )
-            }
+              );
+
+              setPage(1);
+            }}
             className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
           >
 
@@ -577,7 +666,7 @@ export default function ProductsPage() {
 
           <tbody>
 
-            {filteredProducts.map(
+            {paginatedProducts.map(
               (product) => (
 
                 <tr
@@ -617,14 +706,6 @@ export default function ProductsPage() {
                           {product.title}
 
                         </h2>
-
-                        <p className="text-sm text-gray-500 mt-1 line-clamp-1">
-
-                          {
-                            product.description
-                          }
-
-                        </p>
 
                       </div>
 
@@ -682,14 +763,13 @@ export default function ProductsPage() {
                             product
                           )
                         }
-                        className={`px-4 py-2 rounded-full text-sm font-medium ${
-                          product.status ===
-                          "active"
+                        className={`px-4 py-2 rounded-full text-sm font-medium ${product.status ===
+                            "active"
 
                             ? "bg-green-100 text-green-700"
 
                             : "bg-red-100 text-red-700"
-                        }`}
+                          }`}
                       >
 
                         {
@@ -701,14 +781,13 @@ export default function ProductsPage() {
                     ) : (
 
                       <span
-                        className={`px-4 py-2 rounded-full text-sm font-medium ${
-                          product.status ===
-                          "active"
+                        className={`px-4 py-2 rounded-full text-sm font-medium ${product.status ===
+                            "active"
 
                             ? "bg-green-100 text-green-700"
 
                             : "bg-red-100 text-red-700"
-                        }`}
+                          }`}
                       >
 
                         {
@@ -771,20 +850,20 @@ export default function ProductsPage() {
 
                       ) && (
 
-                        <button
-                          onClick={() =>
-                            router.push(
-                              `/admin/products/edit/${product.id}`
-                            )
-                          }
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
-                        >
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/admin/products/edit/${product.id}`
+                              )
+                            }
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+                          >
 
-                          Edit
+                            Edit
 
-                        </button>
+                          </button>
 
-                      )}
+                        )}
 
 
 
@@ -802,20 +881,20 @@ export default function ProductsPage() {
 
                       ) && (
 
-                        <button
-                          onClick={() =>
-                            handleDelete(
-                              product.id
-                            )
-                          }
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
-                        >
+                          <button
+                            onClick={() =>
+                              handleDelete(
+                                product.id
+                              )
+                            }
+                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm"
+                          >
 
-                          Delete
+                            Delete
 
-                        </button>
+                          </button>
 
-                      )}
+                        )}
 
                     </div>
 
@@ -829,6 +908,77 @@ export default function ProductsPage() {
           </tbody>
 
         </table>
+
+      </div>
+
+
+
+
+      {/* Pagination */}
+
+      <div className="flex items-center justify-center gap-2 mt-8">
+
+
+        {/* Prev */}
+
+        <button
+          disabled={page === 1}
+          onClick={() =>
+            setPage(page - 1)
+          }
+          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
+        >
+
+          Prev
+
+        </button>
+
+
+
+
+        {/* Numbers */}
+
+        {Array.from(
+          { length: totalPages },
+          (_, index) => (
+
+            <button
+              key={index}
+              onClick={() =>
+                setPage(index + 1)
+              }
+              className={`px-4 py-2 rounded-lg border transition ${
+                page === index + 1
+                  ? "bg-black text-white"
+                  : "bg-white text-black"
+              }`}
+            >
+
+              {index + 1}
+
+            </button>
+
+          )
+        )}
+
+
+
+
+        {/* Next */}
+
+        <button
+          disabled={
+            page === totalPages
+          }
+          onClick={() =>
+            setPage(page + 1)
+          }
+          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
+        >
+
+          Next
+
+        </button>
 
       </div>
 

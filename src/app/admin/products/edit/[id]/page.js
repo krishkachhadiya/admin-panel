@@ -1,5 +1,5 @@
 "use client";
-
+import TextEditor from "@/components/editor/TextEditor";
 import {
   useEffect,
   useState,
@@ -10,6 +10,11 @@ import {
   useRouter,
 } from "next/navigation";
 
+import {
+  createSlug,
+  generateSlug,
+} from "@/lib/slug";
+
 export default function EditProductPage() {
 
   const params =
@@ -17,6 +22,13 @@ export default function EditProductPage() {
 
   const router =
     useRouter();
+
+
+
+
+  // ======================
+  // STATES
+  // ======================
 
   const [
     categories,
@@ -34,17 +46,33 @@ export default function EditProductPage() {
   ] = useState(false);
 
   const [
+    isSlugEdited,
+    setIsSlugEdited,
+  ] = useState(false);
+
+  const [
     formData,
     setFormData,
   ] = useState({
+
     title: "",
+
+    slug: "",
+
     description: "",
+
     metaTitle: "",
+
     metaDescription: "",
+
     category: "",
+
     subcategory: "",
+
     status: "active",
+
     images: [],
+
     specifications: [],
   });
 
@@ -77,6 +105,8 @@ export default function EditProductPage() {
   }
 
 
+
+
   // ======================
   // FETCH PRODUCT
   // ======================
@@ -106,7 +136,11 @@ export default function EditProductPage() {
       if (product) {
 
         setFormData({
+
           ...product,
+
+          slug:
+            product.slug || "",
 
           subcategory:
             product.subcategory ||
@@ -151,10 +185,46 @@ export default function EditProductPage() {
     fetchProduct();
 
     fetchCategories();
+
   }, []);
 
 
 
+
+  // ======================
+  // AUTO GENERATE SLUG
+  // ======================
+
+  useEffect(() => {
+
+    if (!isSlugEdited) {
+
+      setFormData(
+        (prev) => ({
+
+          ...prev,
+
+          slug:
+            generateSlug(
+              prev.title
+            ),
+
+        })
+      );
+
+    }
+
+  }, [
+    formData.title,
+    isSlugEdited,
+  ]);
+
+
+
+
+  // ======================
+  // FILTER SUBCATEGORIES
+  // ======================
 
   const selectedCategoryData =
     categories.find(
@@ -169,10 +239,17 @@ export default function EditProductPage() {
 
 
 
-
   const filteredSubcategories =
-    selectedCategoryData
-      ?.subcategories || [];
+    categories.filter(
+      (item) =>
+        String(
+          item.parent
+        ) ===
+        String(
+          selectedCategoryData?.id
+        )
+    );
+
 
 
 
@@ -187,7 +264,8 @@ export default function EditProductPage() {
     const file =
       e.target.files[0];
 
-    if (!file) return;
+    if (!file)
+      return;
 
     setUploading(true);
 
@@ -266,8 +344,13 @@ export default function EditProductPage() {
           i !== index
       );
 
+
+
+
     setFormData({
+
       ...formData,
+
       images:
         updatedImages,
     });
@@ -288,6 +371,59 @@ export default function EditProductPage() {
 
     try {
 
+      // FETCH PRODUCTS
+
+      const productsResponse =
+        await fetch(
+          "/api/products"
+        );
+
+      const existingProducts =
+        await productsResponse.json();
+
+
+
+
+      // UNIQUE SLUG
+      // CHECK DUPLICATE SLUG
+
+      const slugExists =
+        existingProducts.some(
+          (item) =>
+
+            item.slug ===
+            formData.slug &&
+
+            item.id !==
+            formData.id
+        );
+
+      if (
+        slugExists
+      ) {
+
+        alert(
+          "Slug already exists"
+        );
+
+        return;
+      }
+
+
+
+
+      // UPDATED DATA
+
+    const updatedFormData = {
+
+  ...formData,
+
+};  
+
+
+
+      // UPDATE PRODUCT
+
       const response =
         await fetch(
           `/api/products/${params.id}`,
@@ -300,7 +436,7 @@ export default function EditProductPage() {
             },
 
             body: JSON.stringify(
-              formData
+              updatedFormData
             ),
           }
         );
@@ -339,11 +475,13 @@ export default function EditProductPage() {
   if (loading) {
 
     return (
+
       <div className="flex items-center justify-center min-h-screen text-2xl font-semibold">
 
         Loading Product...
 
       </div>
+
     );
   }
 
@@ -355,8 +493,8 @@ export default function EditProductPage() {
   // ======================
 
   return (
-    <div className="min-h-screen bg-gray-50 p-10">
 
+    <div className="min-h-screen bg-gray-50 p-10">
 
       <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl p-10">
 
@@ -368,11 +506,15 @@ export default function EditProductPage() {
         <div className="mb-10">
 
           <h1 className="text-5xl font-bold text-gray-900">
+
             Edit Product
+
           </h1>
 
           <p className="text-gray-500 mt-3 text-lg">
+
             Update product details
+
           </p>
 
         </div>
@@ -397,7 +539,9 @@ export default function EditProductPage() {
           <div>
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
+
               Product Title
+
             </label>
 
             <input
@@ -407,7 +551,9 @@ export default function EditProductPage() {
               }
               onChange={(e) =>
                 setFormData({
+
                   ...formData,
+
                   title:
                     e.target.value,
                 })
@@ -420,26 +566,76 @@ export default function EditProductPage() {
 
 
 
-          {/* Description */}
+          {/* Product Slug */}
 
           <div>
+
+            <label className="block text-lg font-semibold text-gray-700 mb-3">
+
+              Product Slug
+
+            </label>
+
+            <input
+              type="text"
+              value={
+                formData.slug
+              }
+              onChange={(e) => {
+
+                setIsSlugEdited(
+                  true
+                );
+
+                setFormData({
+
+                  ...formData,
+
+                  slug:
+                    generateSlug(
+                      e.target.value
+                    ),
+
+                });
+
+              }}
+              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
+            />
+
+          </div>
+
+
+
+
+          {/* Description */}
+
+          <div className="text-black">
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
               Description
             </label>
 
-            <textarea
+            <TextEditor
+
               value={
                 formData.description
               }
-              onChange={(e) =>
+
+              onChange={(content) =>
+
                 setFormData({
+
                   ...formData,
+
                   description:
-                    e.target.value,
+                    content,
+
                 })
+
               }
-              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black resize-none h-36"
+
+              height={400}
+
             />
 
           </div>
@@ -481,20 +677,25 @@ export default function EditProductPage() {
                   Select Category
                 </option>
 
-                {categories.map(
-                  (category) => (
+                {
+                  categories
+                    .filter(
+                      (item) =>
+                        item.parent === null
+                    )
+                    .map((category) => (
 
-                    <option
-                      key={category.id}
-                      value={
-                        category.title
-                      }
-                    >
-                      {category.title}
-                    </option>
+                      <option
+                        key={category.id}
+                        value={
+                          category.title
+                        }
+                      >
+                        {category.title}
+                      </option>
 
-                  )
-                )}
+                    )
+                    )}
 
               </select>
 
@@ -531,8 +732,8 @@ export default function EditProductPage() {
                   !formData.category
                 }
                 className={`w-full border p-4 rounded-xl outline-none transition ${formData.category
-                    ? "border-gray-300 bg-white text-black focus:ring-2 focus:ring-black"
-                    : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                  ? "border-gray-300 bg-white text-black focus:ring-2 focus:ring-black"
+                  : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
                   }`}
               >
 

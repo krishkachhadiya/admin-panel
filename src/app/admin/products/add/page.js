@@ -1,5 +1,5 @@
 "use client";
-
+import TextEditor from "@/components/editor/TextEditor";
 import {
   useEffect,
   useState,
@@ -9,13 +9,15 @@ import {
   useRouter,
 } from "next/navigation";
 
+import {
+  createSlug,
+  generateSlug,
+  isValidSlug,
+} from "@/lib/slug";
+
 export default function AddProductPage() {
 
-  const router =
-    useRouter();
-
-
-
+  const router = useRouter();
 
   // ======================
   // STATES
@@ -30,7 +32,12 @@ export default function AddProductPage() {
     uploading,
     setUploading,
   ] = useState(false);
-  
+
+  const [
+    isSlugEdited,
+    setIsSlugEdited,
+  ] = useState(false);
+
 
   const [
     formData,
@@ -38,6 +45,8 @@ export default function AddProductPage() {
   ] = useState({
 
     title: "",
+
+    slug: "",
 
     description: "",
 
@@ -55,8 +64,6 @@ export default function AddProductPage() {
 
     specifications: [],
   });
-
-
 
 
   // ======================
@@ -85,7 +92,29 @@ export default function AddProductPage() {
   }
 
 
+  useEffect(() => {
 
+    if (!isSlugEdited) {
+
+      setFormData(
+        (prev) => ({
+
+          ...prev,
+
+          slug:
+            generateSlug(
+              prev.title
+            ),
+
+        })
+      );
+
+    }
+
+  }, [
+    formData.title,
+    isSlugEdited,
+  ]);
 
   // ======================
   // LOAD DATA
@@ -116,8 +145,15 @@ export default function AddProductPage() {
     );
 
   const filteredSubcategories =
-    selectedCategoryData
-      ?.subcategories || [];
+    categories.filter(
+      (item) =>
+        String(
+          item.parent
+        ) ===
+        String(
+          selectedCategoryData?.id
+        )
+    );
 
   // ======================
   // IMAGE UPLOAD
@@ -137,7 +173,7 @@ export default function AddProductPage() {
 
     const uploadData = new FormData();
 
-    uploadData.append("file",file);
+    uploadData.append("file", file);
 
     try {
 
@@ -221,58 +257,170 @@ export default function AddProductPage() {
   // ======================
   // CREATE PRODUCT
   // ======================
-async function handleSubmit(e) {
-  e.preventDefault();
-  try {
+  // ======================
+  // CREATE PRODUCT
+  // ======================
 
-    const response =
-      await fetch(
-        "/api/products",
-        {
-          method: "POST",
+  async function handleSubmit(
+    e
+  ) {
 
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
+    e.preventDefault();
 
-          body: JSON.stringify(
-            formData
-          ),
-        }
-      );
 
-    const data = await response.json();
 
-    // ERROR
 
-    if (!data.success) {
+    // ======================
+    // VALIDATE SLUG
+    // ======================
+
+    if (
+      !isValidSlug(
+        formData.slug
+      )
+    ) {
 
       alert(
-        data.message
+        "Number only slug is not valid"
       );
 
       return;
     }
-    // SUCCESS
 
-    alert(
-      "Product Created Successfully"
-    );
-    router.push(
-      "/admin/products"
-    );
 
-  } catch (error) {
 
-    console.log(error);
 
-    alert(
-      "Something went wrong"
-    );
+
+    try {
+
+      // ======================
+      // FETCH PRODUCTS
+      // ======================
+
+      const productsResponse =
+        await fetch(
+          "/api/products"
+        );
+
+
+
+
+      const existingProducts =
+        await productsResponse.json();
+
+
+
+
+      // ======================
+      // CREATE UNIQUE SLUG
+      // ======================
+      const slugExists =
+        existingProducts.some(
+          (item) =>
+            item.slug ===
+            formData.slug
+        );
+
+      if (
+        slugExists
+      ) {
+
+        alert(
+          "Slug already exists"
+        );
+
+        return;
+      }
+
+
+
+      // ======================
+      // UPDATED DATA
+      // ======================
+
+  const updatedFormData = {
+
+  ...formData,
+
+};
+
+
+
+
+      // ======================
+      // CREATE PRODUCT
+      // ======================
+
+      const response =
+        await fetch(
+          "/api/products",
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              updatedFormData
+            ),
+          }
+        );
+
+
+
+
+      const data =
+        await response.json();
+
+
+
+
+      // ======================
+      // ERROR
+      // ======================
+
+      if (!data.success) {
+
+        alert(
+          data.message
+        );
+
+        return;
+      }
+
+
+
+
+      // ======================
+      // SUCCESS
+      // ======================
+
+      alert(
+        "Product Created Successfully"
+      );
+
+
+
+
+      router.push(
+        "/admin/products"
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+
+
+
+      alert(
+        "Something went wrong"
+      );
+    }
   }
-}
-
   // ======================
   // UI
   // ======================
@@ -348,12 +496,49 @@ async function handleSubmit(e) {
 
           </div>
 
+          {/* Product Slug */}
+
+          <div>
+
+            <label className="block text-lg font-semibold text-gray-700 mb-3">
+
+              Product Slug
+
+            </label>
+
+            <input
+              type="text"
+              value={
+                formData.slug
+              }
+              onChange={(e) => {
+
+                setIsSlugEdited(
+                  true
+                );
+
+                setFormData({
+
+                  ...formData,
+
+                  slug:
+                    generateSlug(
+                      e.target.value
+                    ),
+
+                });
+
+              }}
+              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
+            />
+
+          </div>
 
 
 
           {/* Description */}
 
-          <div>
+          <div className="text-black">
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
@@ -361,20 +546,27 @@ async function handleSubmit(e) {
 
             </label>
 
-            <textarea
+            <TextEditor
+
               value={
                 formData.description
               }
-              onChange={(e) =>
+
+              onChange={(content) =>
+
                 setFormData({
 
                   ...formData,
 
                   description:
-                    e.target.value,
+                    content,
+
                 })
+
               }
-              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black resize-none h-36"
+
+              height={400}
+
             />
 
           </div>
@@ -424,38 +616,23 @@ async function handleSubmit(e) {
 
             </label>
 
-
-
-
-            {/* HTML Editor */}
-
-            <div
-              contentEditable
-              suppressContentEditableWarning={
-                true
+            <textarea
+              value={
+                formData.metaDescription
               }
-              onInput={(e) =>
+              onChange={(e) =>
                 setFormData({
 
                   ...formData,
 
                   metaDescription:
-                    e.currentTarget
-                      .innerHTML,
+                    e.target.value,
                 })
               }
-              className="w-full min-h-[220px] border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-            >
-
-              {
-                formData.metaDescription
-              }
-
-            </div>
+              className="w-full h-40 border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black resize-none"
+            />
 
           </div>
-
-
 
 
           {/* Grid */}
@@ -479,17 +656,22 @@ async function handleSubmit(e) {
                 value={
                   formData.category
                 }
-                onChange={(e) =>
-                  setFormData({
+                onChange={(e) => {
 
-                    ...formData,
+                  const value =
+                    e.target.value;
 
-                    category:
-                      e.target.value,
+                  setFormData(
+                    (prev) => ({
 
-                    subcategory: "",
-                  })
-                }
+                      ...prev,
+
+                      category: value,
+
+                      subcategory: "",
+                    })
+                  );
+                }}
                 className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
               >
 
@@ -497,22 +679,28 @@ async function handleSubmit(e) {
                   Select Category
                 </option>
 
-                {categories.map(
-                  (category) => (
+                {
+                  categories
+                    .filter(
+                      (item) =>
+                        item.parent === null
+                    )
+                    .map(
+                      (category) => (
 
-                    <option
-                      key={category.id}
-                      value={
-                        category.title
-                      }
-                    >
+                        <option
+                          key={category.id}
+                          value={
+                            category.title
+                          }
+                        >
 
-                      {category.title}
+                          {category.title}
 
-                    </option>
+                        </option>
 
-                  )
-                )}
+                      )
+                    )}
 
               </select>
 
@@ -535,15 +723,21 @@ async function handleSubmit(e) {
                 value={
                   formData.subcategory
                 }
-                onChange={(e) =>
-                  setFormData({
+                onChange={(e) => {
 
-                    ...formData,
+                  const value =
+                    e.target.value;
 
-                    subcategory:
-                      e.target.value,
-                  })
-                }
+                  setFormData(
+                    (prev) => ({
+
+                      ...prev,
+
+                      subcategory:
+                        value,
+                    })
+                  );
+                }}
                 className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
               >
 
@@ -686,57 +880,57 @@ async function handleSubmit(e) {
             {formData.images.length >
               0 && (
 
-              <div className="mt-8">
+                <div className="mt-8">
 
-                <h3 className="text-xl font-bold text-black mb-5">
+                  <h3 className="text-xl font-bold text-black mb-5">
 
-                  Uploaded Images
+                    Uploaded Images
 
-                </h3>
+                  </h3>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
 
-                  {formData.images.map(
-                    (
-                      img,
-                      index
-                    ) => (
+                    {formData.images.map(
+                      (
+                        img,
+                        index
+                      ) => (
 
-                      <div
-                        key={index}
-                        className="relative group"
-                      >
-
-                        <img
-                          src={img}
-                          alt="product"
-                          className="w-full h-40 object-cover rounded-2xl border shadow-md"
-                        />
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            removeImage(
-                              index
-                            )
-                          }
-                          className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                        <div
+                          key={index}
+                          className="relative group"
                         >
 
-                          ×
+                          <img
+                            src={img}
+                            alt="product"
+                            className="w-full h-40 object-cover rounded-2xl border shadow-md"
+                          />
 
-                        </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              removeImage(
+                                index
+                              )
+                            }
+                            className="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                          >
 
-                      </div>
+                            ×
 
-                    )
-                  )}
+                          </button>
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
 
                 </div>
 
-              </div>
-
-            )}
+              )}
 
           </div>
 
@@ -759,8 +953,8 @@ async function handleSubmit(e) {
                   formData.specifications
                 )
                   ? formData.specifications.join(
-                      ", "
-                    )
+                    ", "
+                  )
                   : ""
               }
               onChange={(e) =>
