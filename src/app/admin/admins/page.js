@@ -11,6 +11,12 @@ import {
 
 export default function AdminsPage() {
 
+  const router =
+    useRouter();
+
+
+
+
   // ======================
   // STATES
   // ======================
@@ -21,8 +27,18 @@ export default function AdminsPage() {
   const [loading, setLoading] =
     useState(true);
 
-  const router =
-    useRouter();
+
+
+
+  // ======================
+  // PAGINATION
+  // ======================
+
+  const [page, setPage] =
+    useState(1);
+
+  const [limit, setLimit] =
+    useState(10);
 
 
 
@@ -78,10 +94,48 @@ export default function AdminsPage() {
     }
   }
 
+
+
+
+  // ======================
+  // FETCH PAGINATION
+  // ======================
+
+  async function fetchPagination() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/pagination"
+        );
+
+      const result =
+        await response.json();
+
+      setLimit(
+        result.data.users || 10
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  }
+
+
+
+
+  // ======================
+  // LOAD DATA
+  // ======================
+
   useEffect(() => {
 
     fetchAdmins();
-    
+
+    fetchPagination();
 
   }, []);
 
@@ -145,6 +199,32 @@ export default function AdminsPage() {
 
 
   // ======================
+  // PAGINATION LOGIC
+  // ======================
+
+  const start =
+    (page - 1) * limit;
+
+  const end =
+    page * limit;
+
+  const paginatedAdmins =
+    admins.slice(
+      start,
+      end
+    );
+
+
+
+  const totalPages =
+    Math.ceil(
+      admins.length / limit
+    );
+
+
+
+
+  // ======================
   // LOADING
   // ======================
 
@@ -177,11 +257,15 @@ export default function AdminsPage() {
         <div>
 
           <h1 className="text-4xl font-bold text-gray-800">
+
             Users
+
           </h1>
 
           <p className="text-gray-500 mt-1">
+
             Manage users
+
           </p>
 
         </div>
@@ -197,7 +281,9 @@ export default function AdminsPage() {
           }
           className="bg-black text-white px-5 py-3 rounded-xl hover:bg-gray-800 transition"
         >
+
           Add User
+
         </button>
 
       </div>
@@ -207,7 +293,7 @@ export default function AdminsPage() {
 
       {/* Table */}
 
-      <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-md overflow-hidden overflow-x-auto">
 
         <table className="w-full">
 
@@ -245,9 +331,9 @@ export default function AdminsPage() {
 
           <tbody>
 
-            {admins.length > 0 ? (
+            {paginatedAdmins.length > 0 ? (
 
-              admins.map(
+              paginatedAdmins.map(
                 (admin) => (
 
                   <tr
@@ -368,6 +454,77 @@ export default function AdminsPage() {
           </tbody>
 
         </table>
+
+      </div>
+
+
+
+
+      {/* Pagination */}
+
+      <div className="flex items-center justify-center gap-2 mt-8">
+
+
+        {/* Prev */}
+
+        <button
+          disabled={page === 1}
+          onClick={() =>
+            setPage(page - 1)
+          }
+          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
+        >
+
+          Prev
+
+        </button>
+
+
+
+
+        {/* Numbers */}
+
+        {Array.from(
+          { length: totalPages },
+          (_, index) => (
+
+            <button
+              key={index}
+              onClick={() =>
+                setPage(index + 1)
+              }
+              className={`px-4 py-2 rounded-lg border transition ${
+                page === index + 1
+                  ? "bg-black text-white"
+                  : "bg-white text-black"
+              }`}
+            >
+
+              {index + 1}
+
+            </button>
+
+          )
+        )}
+
+
+
+
+        {/* Next */}
+
+        <button
+          disabled={
+            page === totalPages
+          }
+          onClick={() =>
+            setPage(page + 1)
+          }
+          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
+        >
+
+          Next
+
+        </button>
 
       </div>
 
