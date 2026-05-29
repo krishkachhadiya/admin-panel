@@ -83,6 +83,10 @@ export default function AdminDashboard() {
   // COUNTS
   // ======================
 
+  // ======================
+  // COUNTS
+  // ======================
+
   const activeProducts =
     products.filter(
       (item) =>
@@ -95,6 +99,12 @@ export default function AdminDashboard() {
       (item) =>
         item.status ===
         "inactive"
+    );
+
+  const mainCategories =
+    categories.filter(
+      (item) =>
+        item.parent === null
     );
 
   // ======================
@@ -122,10 +132,7 @@ export default function AdminDashboard() {
         </p>
 
       </div>
-
-      {/* CARDS */}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6">
 
         {/* TOTAL PRODUCTS */}
 
@@ -137,7 +144,7 @@ export default function AdminDashboard() {
 
           </h2>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black break-words">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black">
 
             {products.length}
 
@@ -155,7 +162,7 @@ export default function AdminDashboard() {
 
           </h2>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-green-600 break-words">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-green-600">
 
             {
               activeProducts.length
@@ -175,7 +182,7 @@ export default function AdminDashboard() {
 
           </h2>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-red-500 break-words">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-red-500">
 
             {
               inactiveProducts.length
@@ -187,7 +194,7 @@ export default function AdminDashboard() {
 
         {/* TOTAL CATEGORIES */}
 
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-8">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-md hover:shadow-lg transition p-5 sm:p-6 lg:p-10">
 
           <h2 className="text-gray-500 text-sm sm:text-base lg:text-lg">
 
@@ -195,17 +202,21 @@ export default function AdminDashboard() {
 
           </h2>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black break-words">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 sm:mt-4 text-black">
 
             {
-              categories.length
+              mainCategories.length
             }
 
           </h1>
 
         </div>
 
+
+
+
       </div>
+
 
     </div>
   );
