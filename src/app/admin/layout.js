@@ -232,6 +232,11 @@ const protectedRoutes = {
         path:
           "/admin/admins",
       },
+      {
+        name: "Pagination",
+        path:
+          "/admin/pagination",
+      }
     ];
   }
 
@@ -419,7 +424,7 @@ if (
 
       <aside className="w-72 bg-black text-white p-6 flex flex-col justify-between">
 
-        <div>
+        <div >
 
 
           {/* Logo */}
@@ -452,7 +457,7 @@ if (
 
           {/* Navigation */}
 
-          <nav className="space-y-3">
+          <nav className="space-y-1">
 
             {menus.map(
               (menu) => (
