@@ -25,61 +25,104 @@ export default function TextEditor({
 
 }) {
 
-  const config =
-  useMemo(
-    () => ({
+const config = useMemo(
+  () => ({
 
-      readonly: false,
+    readonly: false,
 
-      height,
+    height,
 
-      buttons: [
+    toolbarAdaptive: false,
 
-        "bold",
+    toolbarSticky: false,
 
-        "italic",
+    spellcheck: true,
 
-        "underline",
+    showXPath: false,
 
-        "|",
+    showCharsCounter: true,
 
-        "ul",
+    showWordsCounter: true,
 
-        "ol",
+    allowResizeY: true,
 
-        "|",
+    buttons: [
 
-        "link",
+      "source",
 
-        "image",
+      "|",
 
-        "|",
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
 
-        "undo",
+      "|",
 
-        "redo",
+      "superscript",
+      "subscript",
 
-      ],
+      "|",
 
-      removeButtons:
-        ["source"],
+      "font",
+      "fontsize",
 
-      showXPath:
-        false,
+      "|",
 
-      showCharsCounter:
-        false,
+      "brush",
+      "paragraph",
 
-      showWordsCounter:
-        false,
+      "|",
 
-      toolbarAdaptive:
-        false,
+      "ul",
+      "ol",
 
-    }),
-    [height]
-  );
+      "|",
 
+      "outdent",
+      "indent",
+
+      "|",
+
+      "align",
+
+      "|",
+
+      "link",
+      "image",
+      "video",
+      "table",
+
+      "|",
+
+      "hr",
+
+      "|",
+
+      "copyformat",
+
+      "|",
+
+      "undo",
+      "redo",
+
+      "|",
+
+      "fullsize",
+
+      "|",
+
+      "print",
+
+      "|",
+
+      "preview",
+
+    ],
+
+  }),
+  [height]
+);
 
 
 
