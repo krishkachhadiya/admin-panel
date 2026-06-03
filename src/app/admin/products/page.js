@@ -1,69 +1,49 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-import {
-  useRouter,
-} from "next/navigation";
+import { useRouter } from "next/navigation";
+
+import { getCategoryPath } from "@/lib/category-tree";
+
+import TableHeader from "@/components/TableHeader";
+
+import { sortData } from "@/lib/sortdata";
 
 export default function ProductsPage() {
 
-  const router =
-    useRouter();
-
-
-
+  const router = useRouter();
 
   // ======================
   // STATES
   // ======================
 
-  const [
-    products,
-    setProducts,
-  ] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  const [
-    categories,
-    setCategories,
-  ] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const [
-    selectedCategory,
-    setSelectedCategory,
-  ] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [
-    selectedSubcategory,
-    setSelectedSubcategory,
-  ] = useState("");
+  const [search, setSearch] = useState("");
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("");
 
-  const [
-    admin,
-    setAdmin,
-  ] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-
+  const [admin, setAdmin] = useState(null);
 
   // ======================
   // PAGINATION
   // ======================
+  const [sortField, setSortField] =
+    useState("createdAt");
 
-  const [page, setPage] =
-    useState(1);
+  const [sortOrder, setSortOrder] =
+    useState("desc");
 
-  const [limit, setLimit] =
-    useState(10);
+  const [page, setPage] = useState(1);
 
-
+  const [limit, setLimit] = useState(10);
 
 
   // ======================
@@ -74,13 +54,9 @@ export default function ProductsPage() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/products"
-        );
+      const response = await fetch("/api/products");
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       setProducts(data);
 
@@ -95,9 +71,6 @@ export default function ProductsPage() {
     }
   }
 
-
-
-
   // ======================
   // FETCH CATEGORIES
   // ======================
@@ -106,25 +79,17 @@ export default function ProductsPage() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/categories"
-        );
+      const response = await fetch("/api/categories");
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       setCategories(data);
 
     } catch (error) {
 
       console.log(error);
-
     }
   }
-
-
-
 
   // ======================
   // FETCH PAGINATION
@@ -134,17 +99,11 @@ export default function ProductsPage() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/pagination"
-        );
+      const response = await fetch("/api/pagination");
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
-      setLimit(
-        result.data.products || 10
-      );
+      setLimit(result.data.products || 10);
 
     } catch (error) {
 
@@ -152,9 +111,6 @@ export default function ProductsPage() {
 
     }
   }
-
-
-
 
   // ======================
   // LOAD DATA
@@ -169,18 +125,10 @@ export default function ProductsPage() {
     fetchPagination();
 
 
-
-
-    const storedAdmin =
-      sessionStorage.getItem(
-        "admin"
-      );
-
-
+    const storedAdmin = sessionStorage.getItem("admin");
 
 
     if (storedAdmin) {
-
       setAdmin(
         JSON.parse(
           storedAdmin
@@ -191,45 +139,26 @@ export default function ProductsPage() {
   }, []);
 
 
-
-
   // ======================
   // DELETE PRODUCT
   // ======================
 
-  async function handleDelete(
-    id
-  ) {
+  async function handleDelete(id) {
 
-    const confirmDelete =
-      confirm(
-        "Are you sure you want to delete this product?"
-      );
-
-
-
+    const confirmDelete = confirm("Are you sure you want to delete this product?");
 
     if (!confirmDelete)
       return;
 
-
-
-
     try {
 
-      const response =
-        await fetch(
-          `/api/products/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+      const response = await fetch(`/api/products/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-      const data =
-        await response.json();
-
-
-
+      const data = await response.json();
 
       if (data.success) {
 
@@ -243,22 +172,34 @@ export default function ProductsPage() {
     }
   }
 
+  //sorting function
 
+  const handleSort = (field) => {
+    setPage(1);
+
+    if (sortField === field) {
+      setSortOrder(
+        sortOrder === "asc"
+          ? "desc"
+          : "asc"
+      );
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
 
 
   // ======================
   // TOGGLE STATUS
   // ======================
 
-  async function toggleStatus(
-    product
-  ) {
+  async function toggleStatus(product) {
 
     try {
 
       const response =
-        await fetch(
-          `/api/products/${product.id}`,
+        await fetch(`/api/products/${product.id}`,
           {
             method: "PUT",
 
@@ -270,21 +211,12 @@ export default function ProductsPage() {
             body: JSON.stringify({
 
               status:
-                product.status ===
-                  "active"
-
-                  ? "inactive"
-
-                  : "active",
+                product.status === "active" ? "inactive" : "active",
             }),
           }
         );
 
-      const data =
-        await response.json();
-
-
-
+      const data = await response.json();
 
       if (data.success) {
 
@@ -300,39 +232,6 @@ export default function ProductsPage() {
 
 
 
-
-  // ======================
-  // FILTERS
-  // ======================
-
-  const selectedCategoryData =
-    categories.find(
-      (category) =>
-        category.title
-          ?.trim()
-          .toLowerCase() ===
-        selectedCategory
-          ?.trim()
-          .toLowerCase()
-    );
-
-
-
-
-  const filteredSubcategories =
-    categories.filter(
-      (item) =>
-        String(
-          item.parent
-        ) ===
-        String(
-          selectedCategoryData?.id
-        )
-    );
-
-
-
-
   // ======================
   // FILTER PRODUCTS
   // ======================
@@ -341,45 +240,101 @@ export default function ProductsPage() {
     products.filter(
       (product) => {
 
-        const categoryMatch =
+        // Search
+
+        const searchMatch =
+
+          !search ||
+
+          product.title
+            ?.toLowerCase()
+            .includes(
+              search.toLowerCase()
+            );
+
+        // Status
+
+        const statusMatch =
+
+          !statusFilter ||
+
+          product.status ===
+          statusFilter;
+
+        // Category
+
+        let categoryMatch = true;
+
+        if (
           selectedCategory
+        ) {
 
-            ? product.category
-              ?.trim()
-              .toLowerCase() ===
-            selectedCategory
-              ?.trim()
-              .toLowerCase()
+          categoryMatch =
+            false;
 
-            : true;
+          let current =
+            categories.find(
+              (item) =>
+                String(item.id) ===
+                String(
+                  product.category
+                )
+            );
 
+          while (
+            current
+          ) {
 
+            if (
+              String(
+                current.id
+              ) ===
+              String(
+                selectedCategory
+              )
+            ) {
 
+              categoryMatch =
+                true;
 
-        const subcategoryMatch =
-          selectedSubcategory
+              break;
 
-            ? product.subcategory
-              ?.trim()
-              .toLowerCase() ===
-            selectedSubcategory
-              ?.trim()
-              .toLowerCase()
+            }
 
-            : true;
+            current =
+              categories.find(
+                (item) =>
+                  String(
+                    item.id
+                  ) ===
+                  String(
+                    current.parent
+                  )
+              );
 
+          }
 
-
+        }
 
         return (
-          categoryMatch &&
-          subcategoryMatch
+
+          searchMatch &&
+
+          statusMatch &&
+
+          categoryMatch
+
         );
+
       }
     );
 
-
-
+  const sortedProducts =
+    sortData(
+      filteredProducts,
+      sortField,
+      sortOrder
+    );
 
   // ======================
   // PAGINATION LOGIC
@@ -392,7 +347,7 @@ export default function ProductsPage() {
     page * limit;
 
   const paginatedProducts =
-    filteredProducts.slice(
+    sortedProducts.slice(
       start,
       end
     );
@@ -401,7 +356,7 @@ export default function ProductsPage() {
 
   const totalPages =
     Math.ceil(
-      filteredProducts.length /
+      sortedProducts.length /
       limit
     );
 
@@ -493,8 +448,33 @@ export default function ProductsPage() {
 
       {/* Filters */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
+        <div className="bg-white rounded-2xl shadow-md p-6">
+
+          <label className="block text-lg font-semibold text-gray-700 mb-4">
+
+            Search Product
+
+          </label>
+
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => {
+
+              setSearch(
+                e.target.value
+              );
+
+              setPage(1);
+
+            }}
+            placeholder="Search product..."
+            className="w-full border border-gray-300 p-4 rounded-xl text-black"
+          />
+
+        </div>
 
         {/* Category Filter */}
 
@@ -516,9 +496,7 @@ export default function ProductsPage() {
                 e.target.value
               );
 
-              setSelectedSubcategory(
-                ""
-              );
+
 
               setPage(1);
             }}
@@ -541,11 +519,14 @@ export default function ProductsPage() {
                     <option
                       key={category.id}
                       value={
-                        category.title
+                        category.id
                       }
                     >
 
-                      {category.title}
+                      {getCategoryPath(
+                        categories,
+                        category.id
+                      )}
 
                     </option>
 
@@ -556,58 +537,50 @@ export default function ProductsPage() {
 
         </div>
 
-
-
-
-        {/* Subcategory Filter */}
-
         <div className="bg-white rounded-2xl shadow-md p-6">
 
           <label className="block text-lg font-semibold text-gray-700 mb-4">
 
-            Filter By Subcategory
+            Status
 
           </label>
 
           <select
             value={
-              selectedSubcategory
+              statusFilter
             }
             onChange={(e) => {
 
-              setSelectedSubcategory(
+              setStatusFilter(
                 e.target.value
               );
 
               setPage(1);
+
             }}
-            className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
+            className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl"
           >
 
             <option value="">
-              All Subcategories
+              All Status
             </option>
 
-            {filteredSubcategories.map(
-              (subcategory) => (
+            <option value="active">
+              Active
+            </option>
 
-                <option
-                  key={subcategory.id}
-                  value={
-                    subcategory.title
-                  }
-                >
-
-                  {subcategory.title}
-
-                </option>
-
-              )
-            )}
+            <option value="inactive">
+              Inactive
+            </option>
 
           </select>
 
         </div>
+
+
+
+        {/* Subcategory Filter */}
+
 
       </div>
 
@@ -620,36 +593,52 @@ export default function ProductsPage() {
 
         <table className="w-full">
 
-
-          {/* Head */}
-
           <thead className="bg-black text-white">
 
             <tr>
 
-              <th className="text-left p-4">
-                Product
-              </th>
+              <TableHeader
+                label="Product"
+                field="title"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Category
-              </th>
+              <TableHeader
+                label="Category"
+                field="category"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Subcategory
-              </th>
-
-              <th className="text-left p-4">
-                Status
-              </th>
+              <TableHeader
+                label="Status"
+                field="status"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
               <th className="text-left p-4">
                 Images
               </th>
 
-              <th className="text-left p-4">
-                Created
-              </th>
+              <TableHeader
+                label="Created"
+                field="createdAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
+              <TableHeader
+                label="Updated"
+                field="updatedAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
               <th className="text-left p-4">
                 Actions
@@ -658,9 +647,6 @@ export default function ProductsPage() {
             </tr>
 
           </thead>
-
-
-
 
           {/* Body */}
 
@@ -720,26 +706,12 @@ export default function ProductsPage() {
 
                   <td className="p-4 text-gray-700 font-medium">
 
-                    {
+                    {getCategoryPath(
+                      categories,
                       product.category
-                    }
+                    )}
 
                   </td>
-
-
-
-
-                  {/* Subcategory */}
-
-                  <td className="p-4 text-gray-700 font-medium">
-
-                    {
-                      product.subcategory
-                    }
-
-                  </td>
-
-
 
 
                   {/* Status */}
@@ -764,11 +736,11 @@ export default function ProductsPage() {
                           )
                         }
                         className={`px-4 py-2 rounded-full text-sm font-medium ${product.status ===
-                            "active"
+                          "active"
 
-                            ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700"
 
-                            : "bg-red-100 text-red-700"
+                          : "bg-red-100 text-red-700"
                           }`}
                       >
 
@@ -782,11 +754,11 @@ export default function ProductsPage() {
 
                       <span
                         className={`px-4 py-2 rounded-full text-sm font-medium ${product.status ===
-                            "active"
+                          "active"
 
-                            ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700"
 
-                            : "bg-red-100 text-red-700"
+                          : "bg-red-100 text-red-700"
                           }`}
                       >
 
@@ -808,8 +780,7 @@ export default function ProductsPage() {
                   <td className="p-4 text-black">
 
                     {
-                      product.images
-                        ?.length
+                      product.images?.length
                     } Images
 
                   </td>
@@ -823,11 +794,26 @@ export default function ProductsPage() {
 
                     {new Date(
                       product.createdAt
-                    ).toLocaleDateString()}
+                    ).toLocaleString(
+                      "en-IN"
+                    )}
 
                   </td>
 
+                  <td className="p-4 text-gray-600 text-sm">
 
+                    {product.updatedAt
+
+                      ? new Date(
+                        product.updatedAt
+                      ).toLocaleString(
+                        "en-IN"
+                      )
+
+                      : "-"
+                    }
+
+                  </td>
 
 
                   {/* Actions */}
@@ -911,28 +897,23 @@ export default function ProductsPage() {
 
       </div>
 
-
-
-
       {/* Pagination */}
 
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-8 text-black">
 
 
         {/* Prev */}
 
-        <button
-          disabled={page === 1}
-          onClick={() =>
-            setPage(page - 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Prev
-
-        </button>
-
+        {page > 1 && (
+          <button
+            onClick={() =>
+              setPage(page - 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Prev
+          </button>
+        )}
 
 
 
@@ -947,11 +928,10 @@ export default function ProductsPage() {
               onClick={() =>
                 setPage(index + 1)
               }
-              className={`px-4 py-2 rounded-lg border transition ${
-                page === index + 1
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              }`}
+              className={`px-4 py-2 rounded-lg border transition ${page === index + 1
+                ? "bg-black text-white"
+                : "bg-white text-black"
+                }`}
             >
 
               {index + 1}
@@ -962,23 +942,18 @@ export default function ProductsPage() {
         )}
 
 
-
-
         {/* Next */}
 
-        <button
-          disabled={
-            page === totalPages
-          }
-          onClick={() =>
-            setPage(page + 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Next
-
-        </button>
+        {page < totalPages && (
+          <button
+            onClick={() =>
+              setPage(page + 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Next
+          </button>
+        )}
 
       </div>
 
