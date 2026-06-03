@@ -23,106 +23,106 @@ export default function TextEditor({
 
   height = 400,
 
-}) {
+}) {  
 
-const config = useMemo(
-  () => ({
+  const config = useMemo(
+    () => ({
 
-    readonly: false,
+      readonly: false,
 
-    height,
+      height,
 
-    toolbarAdaptive: false,
+      toolbarAdaptive: false,
 
-    toolbarSticky: false,
+      toolbarSticky: false,
 
-    spellcheck: true,
+      spellcheck: true,
 
-    showXPath: false,
+      showXPath: false,
 
-    showCharsCounter: true,
+      showCharsCounter: true,
 
-    showWordsCounter: true,
+      showWordsCounter: true,
 
-    allowResizeY: true,
+      allowResizeY: true,
 
-    buttons: [
+      buttons: [
 
-      "source",
+        "source",
 
-      "|",
+        "|",
 
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
 
-      "|",
+        "|",
 
-      "superscript",
-      "subscript",
+        "superscript",
+        "subscript",
 
-      "|",
+        "|",
 
-      "font",
-      "fontsize",
+        "font",
+        "fontsize",
 
-      "|",
+        "|",
 
-      "brush",
-      "paragraph",
+        "brush",
+        "paragraph",
 
-      "|",
+        "|",
 
-      "ul",
-      "ol",
+        "ul",
+        "ol",
 
-      "|",
+        "|",
 
-      "outdent",
-      "indent",
+        "outdent",
+        "indent",
 
-      "|",
+        "|",
 
-      "align",
+        "align",
 
-      "|",
+        "|",
 
-      "link",
-      "image",
-      "video",
-      "table",
+        "link",
+        "image",
+        "video",
+        "table",
 
-      "|",
+        "|",
 
-      "hr",
+        "hr",
 
-      "|",
+        "|",
 
-      "copyformat",
+        "copyformat",
 
-      "|",
+        "|",
 
-      "undo",
-      "redo",
+        "undo",
+        "redo",
 
-      "|",
+        "|",
 
-      "fullsize",
+        "fullsize",
 
-      "|",
+        "|",
 
-      "print",
+        "print",
 
-      "|",
+        "|",
 
-      "preview",
+        "preview",
 
-    ],
+      ],
 
-  }),
-  [height]
-);
+    }),
+    [height]
+  );
 
 
 
