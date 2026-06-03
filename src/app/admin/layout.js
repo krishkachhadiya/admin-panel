@@ -28,23 +28,23 @@ export default function AdminLayout({
     setAdmin,
   ] = useState(null);
 
-const protectedRoutes = {
+  const protectedRoutes = {
 
-  "/admin/products":
-    "products",
+    "/admin/products":
+      "products",
 
-  "/admin/categories":
-    "categories",
+    "/admin/categories":
+      "categories",
 
-  "/admin/cms":
-    "cms",
+    "/admin/cms":
+      "cms",
 
-  "/admin/admins":
-    "users",
+    "/admin/admins":
+      "users",
 
-  "/admin/roles":
-    "roles",
-};
+    "/admin/roles":
+      "roles",
+  };
 
 
   // ======================
@@ -216,27 +216,26 @@ const protectedRoutes = {
       },
 
       {
-        name: "Roles",
-        path:
-          "/admin/roles",
-      },
-
-      {
         name: "CMS",
         path:
           "/admin/cms",
       },
-
+            {
+        name: "Pagination",
+        path:
+          "/admin/pagination",
+      },
+       {
+        name: "Roles",
+        path:
+          "/admin/roles",
+      },
       {
         name: "Users",
         path:
           "/admin/admins",
       },
-      {
-        name: "Pagination",
-        path:
-          "/admin/pagination",
-      }
+
     ];
   }
 
@@ -348,7 +347,13 @@ const protectedRoutes = {
       });
     }
   }
+  function accessDenied() {
 
+    window.location.href =
+      "/admin";
+
+    return null;
+  }
 
 
 
@@ -371,45 +376,138 @@ const protectedRoutes = {
     );
   }
 
-if (
-  admin &&
-  admin.role !==
+  if (
+    admin &&
+    admin.role !==
     "admin"
-) {
+  ) {
 
-  const currentModule = protectedRoutes[pathname];
+    let currentModule =
+      null;
 
-  if (currentModule) {
 
-    const permissions = admin?.permissions?.[currentModule];
 
-    const hasAccess =
 
-      permissions
-        ?.create ||
+    if (
+      pathname.startsWith(
+        "/admin/products"
+      )
+    ) {
 
-      permissions
-        ?.edit ||
+      currentModule =
+        "products";
+    }
 
-      permissions
-        ?.delete;
+    else if (
+      pathname.startsWith(
+        "/admin/categories"
+      )
+    ) {
 
-    if (!hasAccess) {
+      currentModule =
+        "categories";
+    }
 
-      return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    else if (
+      pathname.startsWith(
+        "/admin/cms"
+      )
+    ) {
 
-          <h1 className="text-2xl font-bold text-red-500">
+      currentModule =
+        "cms";
+    }
 
-            Access Denied
+    else if (
+      pathname.startsWith(
+        "/admin/admins"
+      )
+    ) {
 
-          </h1>
+      currentModule =
+        "users";
+    }
 
-        </div>
-      );
+    else if (
+      pathname.startsWith(
+        "/admin/roles"
+      )
+    ) {
+
+      currentModule =
+        "roles";
+    }
+
+
+
+
+    if (
+      currentModule
+    ) {
+
+      const permissions =
+        admin?.permissions?.[
+        currentModule
+        ];
+
+
+
+
+      // CREATE
+
+      if (
+
+        pathname.endsWith(
+          "/add"
+        ) &&
+
+        !permissions?.create
+
+      ) {
+
+        return accessDenied();
+
+      }
+
+
+
+
+      // EDIT
+
+      if (
+
+        pathname.includes(
+          "/edit/"
+        ) &&
+
+        !permissions?.edit
+
+      ) {
+
+        return accessDenied();
+      }
+
+
+
+
+      // MODULE ACCESS
+
+      const hasAccess =
+
+        permissions?.create ||
+
+        permissions?.edit ||
+
+        permissions?.delete;
+
+      if (
+        !hasAccess
+      ) {
+
+        return accessDenied();
+      }
     }
   }
-}
 
 
   // ======================
