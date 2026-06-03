@@ -21,7 +21,15 @@ export default function EditAdminPage() {
   const id =
     params.id;
 
+  const [
+    existingUsers,
+    setExistingUsers,
+  ] = useState([]);
 
+  const [
+    emailExists,
+    setEmailExists,
+  ] = useState(false);
 
 
   // ======================
@@ -47,12 +55,40 @@ export default function EditAdminPage() {
     setLoading,
   ] = useState(true);
 
- const [
+  const [
     roles,
     setRoles,
   ] = useState([]);
 
-    // ======================
+
+  async function fetchUsers() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/admins"
+        );
+
+      const data =
+        await response.json();
+
+      setExistingUsers(
+        data.admins || []
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
+
+
+
+
+  // ======================
   // FETCH ROLES
   // ======================
 
@@ -143,6 +179,7 @@ export default function EditAdminPage() {
     if (id) {
 
       fetchAdmin();
+      fetchUsers();
     }
 
   }, [id]);
@@ -154,14 +191,9 @@ export default function EditAdminPage() {
   // HANDLE UPDATE
   // ======================
 
-  async function handleSubmit(
-    e
-  ) {
+  async function handleSubmit(e) {
 
     e.preventDefault();
-
-
-
 
     try {
 
@@ -181,9 +213,6 @@ export default function EditAdminPage() {
             ),
           }
         );
-
-
-
 
       const data =
         await response.json();
@@ -277,7 +306,7 @@ export default function EditAdminPage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Name
+              Name *
 
             </label>
 
@@ -308,22 +337,53 @@ export default function EditAdminPage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Email
+              Email *
 
             </label>
-
+            {emailExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Email already exists
+              </p>
+            )}
             <input
               type="email"
               value={
                 formData.email
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const value =
+                  e.target.value;
+
+                const exists =
+                  existingUsers.some(
+                    (item) =>
+
+                      String(item.id) !==
+                      String(id) &&
+
+                      item.email
+                        ?.trim()
+                        .toLowerCase() ===
+
+                      value
+                        .trim()
+                        .toLowerCase()
+                  );
+
+                setEmailExists(
+                  exists
+                );
+
                 setFormData({
+
                   ...formData,
-                  email:
-                    e.target.value,
-                })
-              }
+
+                  email: value,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
               required
             />
@@ -339,12 +399,15 @@ export default function EditAdminPage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Password
+              Password *
 
             </label>
 
             <input
               type="password"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              title="Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character"
               value={
                 formData.password
               }
@@ -356,7 +419,6 @@ export default function EditAdminPage() {
                 })
               }
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              required
             />
 
           </div>
@@ -364,13 +426,13 @@ export default function EditAdminPage() {
 
 
 
-           {/* Role */}
+          {/* Role */}
 
           <div>
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Role
+              Role *
 
             </label>
 
@@ -417,12 +479,13 @@ export default function EditAdminPage() {
 
           {/* Submit */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition">
-
+          <button
+            disabled={
+              emailExists
+            }
+            className=" bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed">
             Update User
-
           </button>
-
         </form>
 
       </div>
