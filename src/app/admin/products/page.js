@@ -32,14 +32,19 @@ export default function ProductsPage() {
 
   const [admin, setAdmin] = useState(null);
 
+  const [galleryOpen, setGalleryOpen] = useState(false);
+
+  const [galleryImages, setGalleryImages] = useState([]);
+
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const [sortField, setSortField] = useState("createdAt");
+
+  const [sortOrder, setSortOrder] = useState("desc");
+
   // ======================
   // PAGINATION
   // ======================
-  const [sortField, setSortField] =
-    useState("createdAt");
-
-  const [sortOrder, setSortOrder] =
-    useState("desc");
 
   const [page, setPage] = useState(1);
 
@@ -111,6 +116,30 @@ export default function ProductsPage() {
 
     }
   }
+  //img gallery
+  const openGallery = (images) => {
+    if (!images?.length) return;
+
+    setGalleryImages(images);
+    setCurrentImage(0);
+    setGalleryOpen(true);
+  };
+
+  const nextImage = () => {
+    setCurrentImage(
+      (prev) =>
+        (prev + 1) % galleryImages.length
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImage(
+      (prev) =>
+        prev === 0
+          ? galleryImages.length - 1
+          : prev - 1
+    );
+  };
 
   // ======================
   // LOAD DATA
@@ -137,6 +166,54 @@ export default function ProductsPage() {
     }
 
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!galleryOpen) return;
+
+      if (e.key === "ArrowRight") {
+        nextImage();
+      }
+
+      if (e.key === "ArrowLeft") {
+        prevImage();
+      }
+
+      if (e.key === "Escape") {
+        setGalleryOpen(false);
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () =>
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+  }, [
+    galleryOpen,
+    currentImage,
+    galleryImages,
+  ]);
+
+  useEffect(() => {
+    if (galleryOpen) {
+      document.body.style.overflow =
+        "hidden";
+    } else {
+      document.body.style.overflow =
+        "auto";
+    }
+
+    return () => {
+      document.body.style.overflow =
+        "auto";
+    };
+  }, [galleryOpen]);
 
 
   // ======================
@@ -621,9 +698,6 @@ export default function ProductsPage() {
                 onSort={handleSort}
               />
 
-              <th className="text-left p-4">
-                Images
-              </th>
 
               <TableHeader
                 label="Created"
@@ -670,15 +744,24 @@ export default function ProductsPage() {
 
                       {/* Image */}
 
-                      <img
-                        src={
-                          product.images?.[0]
+                      <div
+                        className="relative cursor-pointer"
+                        onClick={() =>
+                          openGallery(product.images || [])
                         }
-                        alt={
-                          product.title
-                        }
-                        className="w-16 h-16 object-cover rounded-xl border"
-                      />
+                      >
+                        <img
+                          src={product.images?.[0]}
+                          alt={product.title}
+                          className="w-16 h-16 object-cover rounded-xl border hover:scale-105 transition"
+                        />
+
+                        {product.images?.length > 1 && (
+                          <span className="absolute -top-2 -right-2 bg-black text-white text-xs px-2 py-1 rounded-full">
+                            +{product.images.length - 1}
+                          </span>
+                        )}
+                      </div>
 
 
 
@@ -772,22 +855,6 @@ export default function ProductsPage() {
 
                   </td>
 
-
-
-
-                  {/* Images */}
-
-                  <td className="p-4 text-black">
-
-                    {
-                      product.images?.length
-                    } Images
-
-                  </td>
-
-
-
-
                   {/* Created */}
 
                   <td className="p-4 text-gray-600 text-sm">
@@ -850,8 +917,6 @@ export default function ProductsPage() {
                           </button>
 
                         )}
-
-
 
 
                       {/* Delete */}
@@ -956,7 +1021,67 @@ export default function ProductsPage() {
         )}
 
       </div>
+      {galleryOpen && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
 
+          <button
+            onClick={() =>
+              setGalleryOpen(false)
+            }
+            className="absolute top-5 right-5 text-white text-4xl"
+          >
+            ×
+          </button>
+
+          {galleryImages.length > 1 && (
+            <button
+              onClick={prevImage}
+              className="absolute left-5 text-white text-5xl"
+            >
+              ❮
+            </button>
+          )}
+
+          <img
+            src={galleryImages[currentImage]}
+            alt=""
+            className="max-h-[85vh] max-w-[85vw] rounded-xl"
+          />
+
+          {galleryImages.length > 1 && (
+            <button
+              onClick={nextImage}
+              className="absolute right-5 text-white text-5xl"
+            >
+              ❯
+            </button>
+          )}
+
+          <div className="absolute bottom-6 text-white text-sm">
+            {currentImage + 1} / {galleryImages.length}
+          </div>
+
+          <div className="absolute bottom-16 flex gap-2 overflow-auto max-w-[90vw]">
+            {galleryImages.map(
+              (img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt=""
+                  onClick={() =>
+                    setCurrentImage(index)
+                  }
+                  className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${currentImage === index
+                    ? "border-white"
+                    : "border-transparent"
+                    }`}
+                />
+              )
+            )}
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }
