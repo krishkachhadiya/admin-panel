@@ -15,6 +15,9 @@ import {
   isValidSlug,
 } from "@/lib/slug";
 
+import CategoryPicker
+  from "@/components/CategoryPicker";
+
 export default function AddProductPage() {
 
   const router = useRouter();
@@ -29,6 +32,16 @@ export default function AddProductPage() {
   ] = useState([]);
 
   const [
+    existingProducts,
+    setExistingProducts,
+  ] = useState([]);
+
+  const [
+    productExists,
+    setProductExists,
+  ] = useState(false);
+
+  const [
     uploading,
     setUploading,
   ] = useState(false);
@@ -38,6 +51,10 @@ export default function AddProductPage() {
     setIsSlugEdited,
   ] = useState(false);
 
+  const [
+    slugExists,
+    setSlugExists,
+  ] = useState(false);
 
   const [
     formData,
@@ -54,9 +71,7 @@ export default function AddProductPage() {
 
     metaDescription: "",
 
-    category: "",
-
-    subcategory: "",
+    category: null,
 
     status: "active",
 
@@ -91,6 +106,30 @@ export default function AddProductPage() {
     }
   }
 
+  async function fetchProducts() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/products"
+        );
+
+      const data =
+        await response.json();
+
+      setExistingProducts(
+        data
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
+
 
   useEffect(() => {
 
@@ -123,37 +162,13 @@ export default function AddProductPage() {
   useEffect(() => {
 
     fetchCategories();
+    fetchProducts();
 
   }, []);
 
 
 
 
-  // ======================
-  // FILTER SUBCATEGORIES
-  // ======================
-
-  const selectedCategoryData =
-    categories.find(
-      (category) =>
-        category.title
-          ?.trim()
-          .toLowerCase() ===
-        formData.category
-          ?.trim()
-          .toLowerCase()
-    );
-
-  const filteredSubcategories =
-    categories.filter(
-      (item) =>
-        String(
-          item.parent
-        ) ===
-        String(
-          selectedCategoryData?.id
-        )
-    );
 
   // ======================
   // IMAGE UPLOAD
@@ -192,24 +207,27 @@ export default function AddProductPage() {
       const data =
         await response.json();
 
+      if (!data.success) {
 
-
-
-      if (data.success) {
-
-        setFormData(
-          (prev) => ({
-
-            ...prev,
-
-            images: [
-              ...prev.images,
-              data.imageUrl,
-            ],
-
-          })
+        alert(
+          data.message
         );
+
+        return;
       }
+
+      setFormData(
+        (prev) => ({
+
+          ...prev,
+
+          images: [
+            ...prev.images,
+            data.imageUrl,
+          ],
+
+        })
+      );
 
     } catch (error) {
 
@@ -281,7 +299,7 @@ export default function AddProductPage() {
     ) {
 
       alert(
-        "Number only slug is not valid"
+        "slug is not valid"
       );
 
       return;
@@ -338,11 +356,11 @@ export default function AddProductPage() {
       // UPDATED DATA
       // ======================
 
-  const updatedFormData = {
+      const updatedFormData = {
 
-  ...formData,
+        ...formData,
 
-};
+      };
 
 
 
@@ -473,24 +491,51 @@ export default function AddProductPage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Product Title
+              Product Title *
 
             </label>
-
+            {productExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Product already exists
+              </p>
+            )}
             <input
+              required
+              pattern=".*[A-Za-z].*"
+              title="Title cannot contain only numbers"
               type="text"
               value={
                 formData.title
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const value =
+                  e.target.value;
+
+                const exists =
+                  existingProducts.some(
+                    (item) =>
+                      item.title
+                        ?.trim()
+                        .toLowerCase() ===
+                      value
+                        .trim()
+                        .toLowerCase()
+                  );
+
+                setProductExists(
+                  exists
+                );
+
                 setFormData({
 
                   ...formData,
 
-                  title:
-                    e.target.value,
-                })
-              }
+                  title: value,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
             />
 
@@ -502,19 +547,36 @@ export default function AddProductPage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Product Slug
+              Product Slug *
 
             </label>
-
+            {slugExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Slug already exists
+              </p>
+            )}
             <input
+              required
               type="text"
               value={
                 formData.slug
               }
               onChange={(e) => {
 
-                setIsSlugEdited(
-                  true
+                const slugValue =
+                  generateSlug(
+                    e.target.value
+                  );
+
+                const exists =
+                  existingProducts.some(
+                    (item) =>
+                      item.slug ===
+                      slugValue
+                  );
+
+                setSlugExists(
+                  exists
                 );
 
                 setFormData({
@@ -522,11 +584,13 @@ export default function AddProductPage() {
                   ...formData,
 
                   slug:
-                    generateSlug(
-                      e.target.value
-                    ),
+                    slugValue,
 
                 });
+
+                setIsSlugEdited(
+                  slugValue !== ""
+                );
 
               }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
@@ -637,144 +701,36 @@ export default function AddProductPage() {
 
           {/* Grid */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 
+          <div className="text-black">
 
+            <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-            {/* Category */}
+              Product Category
 
-            <div>
+            </label>
 
-              <label className="block text-lg font-semibold text-gray-700 mb-3">
+            <CategoryPicker
+              categories={
+                categories
+              }
+              value={
+                formData.category
+              }
+              onChange={(id) =>
+                setFormData({
 
-                Category
+                  ...formData,
 
-              </label>
+                  category: id,
 
-              <select
-                value={
-                  formData.category
-                }
-                onChange={(e) => {
-
-                  const value =
-                    e.target.value;
-
-                  setFormData(
-                    (prev) => ({
-
-                      ...prev,
-
-                      category: value,
-
-                      subcategory: "",
-                    })
-                  );
-                }}
-                className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              >
-
-                <option value="">
-                  Select Category
-                </option>
-
-                {
-                  categories
-                    .filter(
-                      (item) =>
-                        item.parent === null
-                    )
-                    .map(
-                      (category) => (
-
-                        <option
-                          key={category.id}
-                          value={
-                            category.title
-                          }
-                        >
-
-                          {category.title}
-
-                        </option>
-
-                      )
-                    )}
-
-              </select>
-
-            </div>
-
-
-
-
-            {/* Subcategory */}
-
-            <div>
-
-              <label className="block text-lg font-semibold text-gray-700 mb-3">
-
-                Subcategory
-
-              </label>
-
-              <select
-                value={
-                  formData.subcategory
-                }
-                onChange={(e) => {
-
-                  const value =
-                    e.target.value;
-
-                  setFormData(
-                    (prev) => ({
-
-                      ...prev,
-
-                      subcategory:
-                        value,
-                    })
-                  );
-                }}
-                className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              >
-
-                <option value="">
-                  Select Subcategory
-                </option>
-
-                {filteredSubcategories.map(
-                  (
-                    subcategory
-                  ) => (
-
-                    <option
-                      key={
-                        subcategory.id
-                      }
-                      value={
-                        subcategory.title
-                      }
-                    >
-
-                      {
-                        subcategory.title
-                      }
-
-                    </option>
-
-                  )
-                )}
-
-              </select>
-
-            </div>
+                })
+              }
+              label="Select Product Category"
+            />
 
           </div>
-
-
 
 
           {/* Status */}
@@ -831,7 +787,9 @@ export default function AddProductPage() {
             <label className="border-2 border-dashed border-gray-300 hover:border-black transition rounded-3xl bg-gray-50 p-10 flex flex-col items-center justify-center cursor-pointer">
 
               <input
+
                 type="file"
+                accept="image/*"
                 onChange={
                   handleImageUpload
                 }
@@ -870,6 +828,18 @@ export default function AddProductPage() {
               </div>
 
             )}
+
+            <p className="text-sm text-gray-500 mt-3">
+
+              Allowed formats:
+              JPG, PNG, WEBP, GIF
+
+              <br />
+
+              Maximum size:
+              5 MB
+
+            </p>
 
 
 
@@ -947,7 +917,7 @@ export default function AddProductPage() {
 
             </label>
 
-            <textarea
+            <textarea 
               value={
                 Array.isArray(
                   formData.specifications
@@ -981,10 +951,14 @@ export default function AddProductPage() {
 
           {/* Submit */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold transition">
-
+          <button
+            disabled={
+              productExists || slugExists
+            }
+            className="bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed
+  "
+          >
             Create Product
-
           </button>
 
         </form>
