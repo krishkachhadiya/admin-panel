@@ -9,6 +9,9 @@ import {
   useRouter,
 } from "next/navigation";
 
+import TableHeader from "@/components/TableHeader";
+import { sortData } from "@/lib/sortdata";
+
 export default function AdminsPage() {
 
   const router =
@@ -40,7 +43,11 @@ export default function AdminsPage() {
   const [limit, setLimit] =
     useState(10);
 
+  const [sortField, setSortField] =
+    useState("name");
 
+  const [sortOrder, setSortOrder] =
+    useState("asc");
 
 
   // ======================
@@ -93,7 +100,6 @@ export default function AdminsPage() {
 
     }
   }
-
 
 
 
@@ -195,8 +201,34 @@ export default function AdminsPage() {
     }
   }
 
+  //sorting
 
+  const handleSort = (field) => {
 
+    setPage(1);
+
+    if (sortField === field) {
+
+      setSortOrder(
+        sortOrder === "asc"
+          ? "desc"
+          : "asc"
+      );
+
+    } else {
+
+      setSortField(field);
+
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedAdmins =
+    sortData(
+      admins,
+      sortField,
+      sortOrder
+    );
 
   // ======================
   // PAGINATION LOGIC
@@ -209,7 +241,7 @@ export default function AdminsPage() {
     page * limit;
 
   const paginatedAdmins =
-    admins.slice(
+    sortedAdmins.slice(
       start,
       end
     );
@@ -218,7 +250,7 @@ export default function AdminsPage() {
 
   const totalPages =
     Math.ceil(
-      admins.length / limit
+      sortedAdmins.length / limit
     );
 
 
@@ -304,17 +336,29 @@ export default function AdminsPage() {
 
             <tr>
 
-              <th className="text-left p-4">
-                Name
-              </th>
+              <TableHeader
+                label="Name"
+                field="name"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Email
-              </th>
+              <TableHeader
+                label="Email"
+                field="email"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Role
-              </th>
+              <TableHeader
+                label="Role"
+                field="role"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
               <th className="text-left p-4">
                 Actions
@@ -323,9 +367,6 @@ export default function AdminsPage() {
             </tr>
 
           </thead>
-
-
-
 
           {/* Body */}
 
@@ -407,9 +448,6 @@ export default function AdminsPage() {
 
                         </button>
 
-
-
-
                         {/* Delete */}
 
                         <button
@@ -462,22 +500,21 @@ export default function AdminsPage() {
 
       {/* Pagination */}
 
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-8 text-black">
 
 
         {/* Prev */}
 
-        <button
-          disabled={page === 1}
-          onClick={() =>
-            setPage(page - 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Prev
-
-        </button>
+        {page > 1 && (
+          <button
+            onClick={() =>
+              setPage(page - 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Prev
+          </button>
+        )}
 
 
 
@@ -493,11 +530,10 @@ export default function AdminsPage() {
               onClick={() =>
                 setPage(index + 1)
               }
-              className={`px-4 py-2 rounded-lg border transition ${
-                page === index + 1
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              }`}
+              className={`px-4 py-2 rounded-lg border transition ${page === index + 1
+                ? "bg-black text-white"
+                : "bg-white text-black"
+                }`}
             >
 
               {index + 1}
@@ -512,19 +548,16 @@ export default function AdminsPage() {
 
         {/* Next */}
 
-        <button
-          disabled={
-            page === totalPages
-          }
-          onClick={() =>
-            setPage(page + 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Next
-
-        </button>
+        {page < totalPages && (
+          <button
+            onClick={() =>
+              setPage(page + 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Next
+          </button>
+        )}
 
       </div>
 
