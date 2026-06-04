@@ -6,6 +6,10 @@ import {
   writeData,
 } from "@/lib/filehandler";
 
+import { getAdmin } from "@/lib/auth";
+
+
+
 // ======================
 // ADD USER
 // ======================
@@ -13,8 +17,39 @@ import {
 export async function POST(
   req
 ) {
-
+  console.log(
+    "ADD USER API HIT"
+  );
   try {
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin"
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Only admin can add users",
+        },
+        { status: 403 }
+      );
+    }
 
     const body =
       await req.json();
@@ -44,6 +79,21 @@ export async function POST(
 
           message:
             "All fields are required",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (
+      password.trim()
+        .length < 6
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Password must be at least 6 characters",
         },
         { status: 400 }
       );
@@ -126,7 +176,7 @@ export async function POST(
 
       permissions:
         permissions || {},
-        
+
       createdAt:
         new Date().toISOString(),
     };
