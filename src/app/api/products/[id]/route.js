@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-
+import { getAdmin } from "@/lib/auth";
 import {
   readData,
   writeData,
@@ -16,6 +16,39 @@ export async function DELETE(
   { params }
 ) {
   try {
+
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin" &&
+      !admin?.permissions
+        ?.products?.delete
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission denied",
+        },
+        { status: 403 }
+      );
+    }
+
     const { id } = await params;
 
     const products =
@@ -64,6 +97,38 @@ export async function PUT(
 
   try {
 
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin" &&
+      !admin?.permissions
+        ?.products?.edit
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission denied",
+        },
+        { status: 403 }
+      );
+    }
+
     const params =
       await context.params;
 
@@ -73,6 +138,38 @@ export async function PUT(
     const body =
       await req.json();
 
+    // ======================
+    // TITLE VALIDATION
+    // ======================
+
+    if (
+      !body.title?.trim()
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Title is required",
+        },
+        { status: 400 }
+      );
+    }
+    // ======================
+    // SLUG VALIDATION
+    // ======================
+
+    if (
+      !body.slug?.trim()
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Slug is required",
+        },
+        { status: 400 }
+      );
+    }
 
 
 
@@ -82,6 +179,33 @@ export async function PUT(
       readData(
         "products.json"
       );
+
+    // ======================
+    // DUPLICATE TITLE
+    // ======================
+
+    const titleExists =
+      products.find(
+        (item) =>
+          String(item.id) !==
+          String(id) &&
+          item.title
+            ?.toLowerCase() ===
+          body.title
+            ?.trim()
+            .toLowerCase()
+      );
+
+    if (titleExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Product title already exists",
+        },
+        { status: 400 }
+      );
+    }
 
 
 
@@ -95,7 +219,29 @@ export async function PUT(
           String(id)
       );
 
+    const slugExists =
+      products.find(
+        (item) =>
+          String(item.id) !==
+          String(id) &&
+          item.slug
+            ?.trim()
+            .toLowerCase() ===
+          body.slug
+            ?.trim()
+            .toLowerCase()
+      );
 
+    if (slugExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Slug already exists",
+        },
+        { status: 400 }
+      );
+    }
 
 
     // NOT FOUND
@@ -129,7 +275,7 @@ export async function PUT(
 
       ...body,
 
-       metaTitle:
+      metaTitle:
 
         body.metaTitle
 

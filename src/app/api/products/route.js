@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-
+import { getAdmin } from "@/lib/auth";
 import {
   readData,
   writeData,
@@ -15,6 +15,19 @@ import {
 export async function GET() {
 
   try {
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
 
     const products =
       readData(
@@ -59,6 +72,37 @@ export async function POST(
 ) {
 
   try {
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin" &&
+      !admin?.permissions
+        ?.products?.create
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission denied",
+        },
+        { status: 403 }
+      );
+    }
 
     const body =
       await req.json();
@@ -112,6 +156,21 @@ export async function POST(
       );
     }
 
+       if (
+      !slug
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+
+          message:
+            "slug is required",
+        },
+        { status: 400 }
+      );
+    }
+
 
 
 
@@ -154,9 +213,6 @@ export async function POST(
           title.toLowerCase()
       );
 
-
-
-
     if (
       alreadyExists
     ) {
@@ -171,7 +227,23 @@ export async function POST(
         { status: 400 }
       );
     }
+    const slugExists =
+      products.find(
+        (item) =>
+          item.slug?.toLowerCase() ===
+          slug?.toLowerCase()
+      );
 
+    if (slugExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Slug already exists",
+        },
+        { status: 400 }
+      );
+    }
 
 
 
