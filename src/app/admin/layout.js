@@ -167,7 +167,14 @@ export default function AdminLayout({
   // LOGOUT
   // ======================
 
-  function handleLogout() {
+  async function handleLogout() {
+
+    await fetch(
+      "/api/logout",
+      {
+        method: "POST",
+      }
+    );
 
     sessionStorage.clear();
 
