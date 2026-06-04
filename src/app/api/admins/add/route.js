@@ -1,5 +1,5 @@
 import { NextResponse }
-from "next/server";
+  from "next/server";
 
 import {
   readData,
@@ -77,36 +77,36 @@ export async function POST(
       );
 
     // ======================
-// CHECK EMAIL OR NAME EXISTS
-// ======================
+    // CHECK EMAIL OR NAME EXISTS
+    // ======================
 
-const alreadyExists =
-  admins.find(
-    (item) =>
+    const alreadyExists =
+      admins.find(
+        (item) =>
 
-      item.email
-        ?.toLowerCase() ===
-        email.toLowerCase() ||
+          item.email
+            ?.toLowerCase() ===
+          email.toLowerCase() ||
 
-      item.name
-        ?.toLowerCase() ===
-        name.toLowerCase()
-  );
+          item.name
+            ?.toLowerCase() ===
+          name.toLowerCase()
+      );
 
-if (
-  alreadyExists
-) {
+    if (
+      alreadyExists
+    ) {
 
-  return NextResponse.json(
-    {
-      success: false,
+      return NextResponse.json(
+        {
+          success: false,
 
-      message:
-        "Email or username already exists",
-    },
-    { status: 400 }
-  );
-}
+          message:
+            "Email or username already exists",
+        },
+        { status: 400 }
+      );
+    }
 
     // ======================
     // CREATE USER
@@ -126,6 +126,9 @@ if (
 
       permissions:
         permissions || {},
+        
+      createdAt:
+        new Date().toISOString(),
     };
 
 

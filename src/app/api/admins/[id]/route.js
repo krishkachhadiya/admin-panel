@@ -1,5 +1,5 @@
 import { NextResponse }
-from "next/server";
+  from "next/server";
 
 import {
   readData,
@@ -146,7 +146,7 @@ export async function PUT(
     ] = {
 
       ...admins[
-        adminIndex
+      adminIndex
       ],
 
       name:
@@ -160,6 +160,9 @@ export async function PUT(
 
       role:
         body.role,
+
+      updatedAt:
+        new Date().toISOString(),
     };
 
 
@@ -182,7 +185,7 @@ export async function PUT(
 
       admin:
         admins[
-          adminIndex
+        adminIndex
         ],
     });
 
