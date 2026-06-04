@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAdmin } from "@/lib/auth";
 
 import {
   readData,
@@ -19,6 +20,35 @@ export async function PUT(
 
   try {
 
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin" &&
+      !admin?.permissions
+        ?.categories?.edit
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission denied",
+        },
+        { status: 403 }
+      );
+    }
 
     // ======================
     // GET ID
@@ -43,6 +73,31 @@ export async function PUT(
 
       body =
         await req.json();
+      if (
+        !body.title?.trim()
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              "Title required",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (
+        !body.slug?.trim()
+      ) {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              "Slug required",
+          },
+          { status: 400 }
+        );
+      }
 
     } catch {
 
@@ -62,7 +117,54 @@ export async function PUT(
         "categories.json"
       );
 
+    const titleExists =
+      categories.find(
+        (item) =>
+          Number(item.id) !==
+          Number(id) &&
+          item.title
+            ?.trim()
+            .toLowerCase() ===
+          body.title
+            ?.trim()
+            .toLowerCase()
+      );
 
+    if (titleExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Category title already exists",
+        },
+        { status: 400 }
+      );
+    }
+
+
+    const slugExists =
+      categories.find(
+        (item) =>
+          Number(item.id) !==
+          Number(id) &&
+          item.slug
+            ?.trim()
+            .toLowerCase() ===
+          body.slug
+            ?.trim()
+            .toLowerCase()
+      );
+
+    if (slugExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Slug already exists",
+        },
+        { status: 400 }
+      );
+    }
 
 
     // ======================
@@ -122,7 +224,7 @@ export async function PUT(
 
       metaTitle:
         body.metaTitle
-        ?.replace(
+          ?.replace(
             /<[^>]*>/g,
             " "
           )
@@ -222,6 +324,35 @@ export async function DELETE(
   context
 ) {
 
+  const admin =
+    await getAdmin();
+
+  if (!admin) {
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "Please login first",
+      },
+      { status: 401 }
+    );
+  }
+
+  if (
+    admin.role !==
+    "admin" &&
+    !admin?.permissions
+      ?.categories?.delete
+  ) {
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "Permission denied",
+      },
+      { status: 403 }
+    );
+  }
   try {
 
 
@@ -247,7 +378,23 @@ export async function DELETE(
         "categories.json"
       );
 
+    const category =
+      categories.find(
+        (item) =>
+          Number(item.id) ===
+          Number(id)
+      );
 
+    if (!category) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Category Not Found",
+        },
+        { status: 404 }
+      );
+    }
 
 
     // ======================

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getAdmin } from "@/lib/auth";
+  
 
 import {
   readData,
@@ -60,6 +62,35 @@ export async function POST(
 
   try {
 
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin" &&
+      !admin?.permissions
+        ?.categories?.create
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission denied",
+        },
+        { status: 403 }
+      );
+    }
     const body =
       await req.json();
 
@@ -246,7 +277,7 @@ export async function POST(
 
       metaTitle:
         metaTitle
-        ?.replace(
+          ?.replace(
             /<[^>]*>/g,
             " "
           )
