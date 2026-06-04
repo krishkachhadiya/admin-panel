@@ -51,9 +51,9 @@ export async function POST(
       admins.find(
         (item) =>
           item.email ===
-            email &&
+          email &&
           item.password ===
-            password
+          password
       );
 
 
@@ -120,21 +120,39 @@ export async function POST(
 
 
 
-      return NextResponse.json({
+      const response =
+        NextResponse.json({
 
-        success: true,
+          success: true,
 
-        message:
-          "Login Successful",
+          message:
+            "Login Successful",
 
-        admin: {
+          admin: {
 
+            ...admin,
+
+            permissions:
+              fullPermissions,
+          },
+        });
+
+      response.cookies.set(
+        "admin",
+        JSON.stringify({
           ...admin,
-
           permissions:
             fullPermissions,
-        },
-      });
+        }),
+        {
+          httpOnly: true,
+          path: "/",
+          maxAge:
+            60 * 60 * 24,
+        }
+      );
+
+      return response;
     }
 
 
@@ -185,17 +203,26 @@ export async function POST(
     // ======================
     // RESPONSE
     // ======================
+    const response =
+      NextResponse.json({
+        success: true,
+        message:
+          "Login Successful",
+        admin: finalAdmin,
+      });
 
-    return NextResponse.json({
+    response.cookies.set(
+      "admin",
+      JSON.stringify(finalAdmin),
+      {
+        httpOnly: true,
+        path: "/",
+        maxAge:
+          60 * 60 * 24, // 1 day
+      }
+    );
 
-      success: true,
-
-      message:
-        "Login Successful",
-
-      admin:
-        finalAdmin,
-    });
+    return response;
 
   } catch (error) {
 
