@@ -6,7 +6,8 @@ import {
   writeData,
 } from "@/lib/filehandler";
 
-
+import { getAdmin }
+  from "@/lib/auth";
 
 
 // ======================
@@ -20,6 +21,20 @@ export async function GET(
 
   try {
 
+    const currentAdmin =
+      await getAdmin();
+
+    if (!currentAdmin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
     const params =
       await context.params;
 
@@ -92,8 +107,37 @@ export async function PUT(
   req,
   context
 ) {
-
   try {
+
+    const currentAdmin =
+      await getAdmin();
+
+    if (!currentAdmin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      currentAdmin.role !==
+      "admin"
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Only admin can access this",
+        },
+        { status: 403 }
+      );
+    }
 
     const params =
       await context.params;
@@ -104,25 +148,32 @@ export async function PUT(
     const body =
       await req.json();
 
+    if (
+      !body.name?.trim() ||
+      !body.email?.trim() ||
+      !body.role?.trim()
+    ) {
 
-
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "All fields are required",
+        },
+        { status: 400 }
+      );
+    }
 
     const admins =
       readData(
         "admins.json"
       );
 
-
-
-
     const adminIndex =
       admins.findIndex(
         (item) =>
           item.id === id
       );
-
-
-
 
     if (
       adminIndex === -1
@@ -138,6 +189,49 @@ export async function PUT(
       );
     }
 
+    const emailExists =
+      admins.find(
+        (item) =>
+          item.id !== id &&
+          item.email
+            ?.toLowerCase() ===
+          body.email
+            ?.toLowerCase()
+      );
+
+    if (emailExists) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Email already exists",
+        },
+        { status: 400 }
+      );
+    }
+
+    const nameExists =
+      admins.find(
+        (item) =>
+          item.id !== id &&
+          item.name
+            ?.toLowerCase() ===
+          body.name
+            ?.toLowerCase()
+      );
+
+    if (nameExists) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Username already exists",
+        },
+        { status: 400 }
+      );
+    }
 
 
 
@@ -215,8 +309,37 @@ export async function DELETE(
   req,
   context
 ) {
-
   try {
+
+    const currentAdmin =
+      await getAdmin();
+
+    if (!currentAdmin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      currentAdmin.role !==
+      "admin"
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Only admin can access this",
+        },
+        { status: 403 }
+      );
+    }
 
     const params =
       await context.params;
@@ -224,16 +347,42 @@ export async function DELETE(
     const id =
       Number(params.id);
 
-
-
-
     const admins =
       readData(
         "admins.json"
       );
 
+    const admin =
+      admins.find(
+        (item) =>
+          item.id === id
+      );
 
+    if (!admin) {
 
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "User Not Found",
+        },
+        { status: 404 }
+      );
+    }
+
+    if (
+      currentAdmin.id === id
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "You cannot delete your own account",
+        },
+        { status: 400 }
+      );
+    }
 
     const filteredAdmins =
       admins.filter(
