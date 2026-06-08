@@ -360,6 +360,22 @@ export default function AdminsPage() {
                 onSort={handleSort}
               />
 
+
+              <TableHeader
+                label="Created"
+                field="createdAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
+              <TableHeader
+                label="Updated"
+                field="updatedAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
+
               <th className="text-left p-4">
                 Actions
               </th>
@@ -423,7 +439,32 @@ export default function AdminsPage() {
 
                     </td>
 
+                      {/* create update */}
 
+                    <td className="p-4 text-gray-600 text-sm">
+
+                      {new Date(
+                        admin.createdAt
+                      ).toLocaleString(
+                        "en-IN"
+                      )}
+
+                    </td>
+
+                    <td className="p-4 text-gray-600 text-sm">
+
+                      {admin.updatedAt
+
+                        ? new Date(
+                          admin.updatedAt
+                        ).toLocaleString(
+                          "en-IN"
+                        )
+
+                        : "-"
+                      }
+
+                    </td>
 
 
                     {/* Actions */}
