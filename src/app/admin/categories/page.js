@@ -9,6 +9,9 @@ import {
   useRouter,
 } from "next/navigation";
 
+import TableHeader from "@/components/TableHeader";
+import { sortData } from "@/lib/sortdata";
+
 export default function CategoriesPage() {
 
   const router =
@@ -50,7 +53,11 @@ export default function CategoriesPage() {
     useState(10);
 
 
+  const [sortField, setSortField] =
+    useState("createdAt");
 
+  const [sortOrder, setSortOrder] =
+    useState("desc");
 
   // ======================
   // FETCH CATEGORIES
@@ -82,8 +89,6 @@ export default function CategoriesPage() {
   }
 
 
-
-
   // ======================
   // FETCH PAGINATION
   // ======================
@@ -112,6 +117,27 @@ export default function CategoriesPage() {
   }
 
 
+  // sorting logic 
+
+  const handleSort = (field) => {
+
+    setPage(1);
+
+    if (sortField === field) {
+
+      setSortOrder(
+        sortOrder === "asc"
+          ? "desc"
+          : "asc"
+      );
+
+    } else {
+
+      setSortField(field);
+
+      setSortOrder("asc");
+    }
+  };
 
 
   // ======================
@@ -200,6 +226,13 @@ export default function CategoriesPage() {
   }
 
 
+  // sorting
+  const sortedCategories =
+    sortData(
+      categories,
+      sortField,
+      sortOrder
+    );
 
 
   // ======================
@@ -213,7 +246,7 @@ export default function CategoriesPage() {
     page * limit;
 
   const paginatedCategories =
-    categories.slice(
+    sortedCategories.slice(
       start,
       end
     );
@@ -222,7 +255,7 @@ export default function CategoriesPage() {
 
   const totalPages =
     Math.ceil(
-      categories.length /
+      sortedCategories.length /
       limit
     );
 
@@ -325,25 +358,52 @@ export default function CategoriesPage() {
 
             <tr>
 
-              <th className="text-left p-4">
-                Title
-              </th>
+              <TableHeader
+                label="Title"
+                field="title"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Slug
-              </th>
+              <TableHeader
+                label="Slug"
+                field="slug"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Parent
-              </th>
+              <TableHeader
+                label="Parent"
+                field="parent"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Status
-              </th>
+              <TableHeader
+                label="Status"
+                field="status"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
-              <th className="text-left p-4">
-                Created
-              </th>
+              <TableHeader
+                label="Created"
+                field="createdAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
+              <TableHeader
+                label="Updated"
+                field="updatedAt"
+                sortField={sortField}
+                sortOrder={sortOrder}
+                onSort={handleSort}
+              />
 
               <th className="text-left p-4">
                 Actions
@@ -417,11 +477,11 @@ export default function CategoriesPage() {
 
                     <span
                       className={`px-4 py-2 rounded-full text-sm font-medium ${category.status ===
-                          "active"
+                        "active"
 
-                          ? "bg-green-100 text-green-700"
+                        ? "bg-green-100 text-green-700"
 
-                          : "bg-red-100 text-red-700"
+                        : "bg-red-100 text-red-700"
                         }`}
                     >
 
@@ -440,7 +500,24 @@ export default function CategoriesPage() {
 
                     {new Date(
                       category.createdAt
-                    ).toLocaleDateString()}
+                    ).toLocaleString(
+                      "en-IN"
+                    )}
+
+                  </td>
+
+                  <td className="p-4 text-gray-600 text-sm">
+
+                    {category.updatedAt
+
+                      ? new Date(
+                        category.updatedAt
+                      ).toLocaleString(
+                        "en-IN"
+                      )
+
+                      : "-"
+                    }
 
                   </td>
 
@@ -533,22 +610,21 @@ export default function CategoriesPage() {
 
       {/* Pagination */}
 
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-8 text-black">
 
 
         {/* Prev */}
 
-        <button
-          disabled={page === 1}
-          onClick={() =>
-            setPage(page - 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Prev
-
-        </button>
+        {page > 1 && (
+          <button
+            onClick={() =>
+              setPage(page - 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Prev
+          </button>
+        )}
 
 
 
@@ -565,8 +641,8 @@ export default function CategoriesPage() {
                 setPage(index + 1)
               }
               className={`px-4 py-2 rounded-lg border transition ${page === index + 1
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
+                ? "bg-black text-white"
+                : "bg-white text-black"
                 }`}
             >
 
@@ -582,19 +658,16 @@ export default function CategoriesPage() {
 
         {/* Next */}
 
-        <button
-          disabled={
-            page === totalPages
-          }
-          onClick={() =>
-            setPage(page + 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Next
-
-        </button>
+        {page < totalPages && (
+          <button
+            onClick={() =>
+              setPage(page + 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Next
+          </button>
+        )}
 
       </div>
 
