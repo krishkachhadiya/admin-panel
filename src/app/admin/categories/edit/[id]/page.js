@@ -10,6 +10,9 @@ import {
   useRouter,
 } from "next/navigation";
 
+import CategoryPicker
+  from "@/components/CategoryPicker";
+
 import {
   createSlug,
 } from "@/lib/slug";
@@ -42,7 +45,15 @@ export default function EditCategoryPage() {
     setAllCategories,
   ] = useState([]);
 
+  const [
+    titleExists,
+    setTitleExists,
+  ] = useState(false);
 
+  const [
+    slugExists,
+    setSlugExists,
+  ] = useState(false);
 
 
   const [
@@ -133,9 +144,18 @@ export default function EditCategoryPage() {
 
       if (category) {
 
-        setFormData(
-          category
-        );
+        setFormData({
+
+          ...category,
+
+          parent:
+            category.parent
+              ? Number(
+                category.parent
+              )
+              : null,
+
+        });
 
 
 
@@ -224,6 +244,7 @@ export default function EditCategoryPage() {
 
       return;
     }
+
 
 
 
@@ -435,26 +456,58 @@ export default function EditCategoryPage() {
               Title
 
             </label>
-
+            {titleExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Category already exists
+              </p>
+            )}
             <input
+              required
+              pattern=".*[A-Za-z].*"
+              title="Title cannot contain only numbers"
               type="text"
               value={
                 formData.title
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const value =
+                  e.target.value;
+
+                const exists =
+                  allCategories.some(
+                    (item) =>
+
+                      item.id !=
+                      params.id &&
+
+                      item.title
+                        ?.trim()
+                        .toLowerCase() ===
+
+                      value
+                        .trim()
+                        .toLowerCase()
+                  );
+
+                setTitleExists(
+                  exists
+                );
+
                 setFormData({
 
                   ...formData,
 
-                  title:
-                    e.target.value,
+                  title: value,
 
                   slug:
                     generateSlug(
-                      e.target.value
+                      value
                     ),
-                })
-              }
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl"
             />
 
@@ -472,23 +525,49 @@ export default function EditCategoryPage() {
               Slug
 
             </label>
-
+            {slugExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Slug already exists
+              </p>
+            )}
             <input
               type="text"
+              required
               value={
                 formData.slug
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const slugValue =
+                  generateSlug(
+                    e.target.value
+                  );
+
+                const exists =
+                  allCategories.some(
+                    (item) =>
+
+                      item.id !=
+                      params.id &&
+
+                      item.slug ===
+                      slugValue
+                  );
+
+                setSlugExists(
+                  exists
+                );
+
                 setFormData({
 
                   ...formData,
 
                   slug:
-                    generateSlug(
-                      e.target.value
-                    ),
-                })
-              }
+                    slugValue,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl"
             />
 
@@ -499,7 +578,9 @@ export default function EditCategoryPage() {
 
           {/* Parent */}
 
-          <div>
+          {/* Parent */}
+
+          <div className="text-black">
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
@@ -507,62 +588,30 @@ export default function EditCategoryPage() {
 
             </label>
 
-            <select
-              value={
-                formData.parent || ""
+            <CategoryPicker
+              categories={
+                allCategories.filter(
+                  (item) =>
+                    item.id !==
+                    formData.id
+                )
               }
-              onChange={(e) =>
+              value={
+                formData.parent
+              }
+              onChange={(id) =>
                 setFormData({
 
                   ...formData,
 
-                  parent:
-                    e.target.value || null,
+                  parent: id,
+
                 })
               }
-              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl"
-            >
-
-              <option value="">
-                Main Category
-              </option>
-
-              {
-                allCategories
-                  .filter(
-                    (item) =>
-                      item.parent ===
-                      null &&
-                      item.id !==
-                      formData.id
-                  )
-                  .map(
-                    (category) => (
-
-                      <option
-                        key={
-                          category.id
-                        }
-                        value={
-                          category.id
-                        }
-                      >
-
-                        {
-                          category.title
-                        }
-
-                      </option>
-                    )
-                  )
-              }
-
-            </select>
+              label="Select Parent Category"
+            />
 
           </div>
-
-
-
 
           {/* Meta Title */}
 
@@ -575,7 +624,10 @@ export default function EditCategoryPage() {
             </label>
 
             <input
+              required
               type="text"
+              pattern=".*[A-Za-z].*"
+              title="MetaTitle cannot contain only numbers"
               value={
                 formData.metaTitle ||
                 ""
@@ -608,6 +660,9 @@ export default function EditCategoryPage() {
             </label>
 
             <textarea
+              required
+              pattern=".*[A-Za-z].*"
+              title="Desscitption cannot contain only numbers"
               rows={5}
               value={
                 formData.metaDescription ||
@@ -859,10 +914,14 @@ export default function EditCategoryPage() {
 
           {/* Submit */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold">
-
+          <button
+            disabled={
+              titleExists ||
+              slugExists
+            }
+            className=" bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Update Category
-
           </button>
 
         </form>

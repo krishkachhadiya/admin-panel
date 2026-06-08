@@ -13,6 +13,10 @@ import {
   createSlug,
 } from "@/lib/slug";
 
+import CategoryPicker
+  from "@/components/CategoryPicker";
+
+
 export default function AddCategoryPage() {
 
   const router =
@@ -30,7 +34,15 @@ export default function AddCategoryPage() {
     setAllCategories,
   ] = useState([]);
 
+  const [
+    titleExists,
+    setTitleExists,
+  ] = useState(false);
 
+  const [
+    slugExists,
+    setSlugExists,
+  ] = useState(false);
 
 
   const [
@@ -115,6 +127,21 @@ export default function AddCategoryPage() {
     value
   ) {
 
+    const exists =
+      allCategories.some(
+        (item) =>
+          item.title
+            ?.trim()
+            .toLowerCase() ===
+          value
+            .trim()
+            .toLowerCase()
+      );
+
+    setTitleExists(
+      exists
+    );
+
     setFormData({
 
       ...formData,
@@ -123,7 +150,9 @@ export default function AddCategoryPage() {
 
       slug:
         generateSlug(value),
+
     });
+
   }
 
 
@@ -314,9 +343,16 @@ export default function AddCategoryPage() {
               Title
 
             </label>
-
+            {titleExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Category already exists
+              </p>
+            )}
             <input
               type="text"
+              required
+              pattern=".*[A-Za-z].*"
+              title="Title cannot contain only numbers"
               value={
                 formData.title
               }
@@ -342,22 +378,45 @@ export default function AddCategoryPage() {
               Slug
 
             </label>
-
+            {slugExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Slug already exists
+              </p>
+            )}
             <input
               type="text"
+              required
               value={
                 formData.slug
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const slugValue =
+                  generateSlug(
+                    e.target.value
+                  );
+
+                const exists =
+                  allCategories.some(
+                    (item) =>
+                      item.slug ===
+                      slugValue
+                  );
+
+                setSlugExists(
+                  exists
+                );
+
                 setFormData({
+
                   ...formData,
 
                   slug:
-                    generateSlug(
-                      e.target.value
-                    ),
-                })
-              }
+                    slugValue,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
             />
 
@@ -368,7 +427,7 @@ export default function AddCategoryPage() {
 
           {/* Parent Category */}
 
-          <div>
+          <div className="text-black">
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
@@ -376,50 +435,24 @@ export default function AddCategoryPage() {
 
             </label>
 
-            <select
-              value={
-                formData.parent || ""
+            <CategoryPicker
+              categories={
+                allCategories
               }
-              onChange={(e) =>
+              value={
+                formData.parent
+              }
+              onChange={(id) =>
                 setFormData({
+
                   ...formData,
 
-                  parent:
-                    e.target.value || null,
+                  parent: id,
+
                 })
               }
-              className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-            >
-
-              <option value="">
-                Main Category
-              </option>
-
-              {
-                allCategories
-                  .filter(
-                    (item) =>
-                      item.parent === null
-                  )
-                  .map((item) => (
-
-                    <option
-                      key={
-                        item.id
-                      }
-                      value={
-                        item.id
-                      }
-                    >
-
-                      {item.title}
-
-                    </option>
-                  )
-                  )
-              }
-
-            </select>
+              label="Select Parent Category"
+            />
 
           </div>
 
@@ -438,6 +471,9 @@ export default function AddCategoryPage() {
 
             <input
               type="text"
+              required
+              pattern=".*[A-Za-z].*"
+              title="Meta Title cannot contain only numbers"
               value={
                 formData.metaTitle
               }
@@ -468,6 +504,9 @@ export default function AddCategoryPage() {
             </label>
 
             <textarea
+              required
+              pattern=".*[A-Za-z].*"
+              title="Description cannot contain only numbers"
               rows={5}
               value={
                 formData.metaDescription
@@ -530,11 +569,17 @@ export default function AddCategoryPage() {
 
           {/* Submit */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold transition">
+          <button
+            disabled={
+              titleExists ||
+              slugExists
+            }
+            className="bg-black hover:bg-gray-800 text-white px-10 py-4 rounded-xl text-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
 
+          >
             Create Category
-
           </button>
+
 
         </form>
 
