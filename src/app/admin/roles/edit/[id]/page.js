@@ -22,7 +22,15 @@ export default function EditRolePage() {
     params.id;
 
 
+  const [
+    existingRoles,
+    setExistingRoles,
+  ] = useState([]);
 
+  const [
+    roleExists,
+    setRoleExists,
+  ] = useState(false);
 
   // ======================
   // STATES
@@ -112,7 +120,17 @@ export default function EditRolePage() {
       const data =
         await response.json();
 
+      const rolesResponse =
+        await fetch(
+          "/api/roles"
+        );
 
+      const rolesData =
+        await rolesResponse.json();
+
+      setExistingRoles(
+        rolesData.roles || []
+      );
 
 
       if (data.success) {
@@ -176,7 +194,7 @@ export default function EditRolePage() {
 
         ...formData
           .permissions[
-          module
+        module
         ],
 
         [action]:
@@ -359,24 +377,53 @@ export default function EditRolePage() {
 
             <label className="block text-lg font-semibold text-gray-700 mb-3">
 
-              Role Name
+              Role Name *
 
             </label>
-
+            {roleExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Role already exists
+              </p>
+            )}
             <input
               type="text"
               value={
                 formData.name
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const value =
+                  e.target.value;
+
+                const exists =
+                  existingRoles.some(
+                    (item) =>
+
+                      String(item.id) !==
+                      String(id) &&
+
+                      item.name
+                        ?.trim()
+                        .toLowerCase() ===
+
+                      value
+                        .trim()
+                        .toLowerCase()
+                  );
+
+                setRoleExists(
+                  exists
+                );
+
                 setFormData({
 
                   ...formData,
 
-                  name:
-                    e.target.value,
-                })
-              }
+                  name: value,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
               required
             />
@@ -555,10 +602,12 @@ export default function EditRolePage() {
 
           {/* SUBMIT */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition">
-
+          <button
+            disabled={
+              roleExists
+            }
+            className=" bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed">
             Update Role
-
           </button>
 
         </form>

@@ -2,6 +2,7 @@
 
 import {
   useState,
+  useEffect
 } from "react";
 
 import {
@@ -54,6 +55,47 @@ export default function AddRolePage() {
       },
     },
   });
+
+  const [
+    existingRoles,
+    setExistingRoles,
+  ] = useState([]);
+
+  const [
+    roleExists,
+    setRoleExists,
+  ] = useState(false);
+
+
+  useEffect(() => {
+
+    fetchRoles();
+
+  }, []);
+
+  async function fetchRoles() {
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/roles"
+        );
+
+      const data =
+        await response.json();
+
+      setExistingRoles(
+        data.roles || []
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
 
   // ======================
   // HANDLE CHECKBOX
@@ -211,21 +253,51 @@ export default function AddRolePage() {
               Role Name
 
             </label>
-
+            {roleExists && (
+              <p className="text-red-500 text-sm mt-2">
+                Role already exists
+              </p>
+            )}
             <input
+              required
               type="text"
               value={
                 formData.name
               }
-              onChange={(e) =>
+              onChange={(e) => {
+
+                const value =
+                  e.target.value;
+
+                const exists =
+                  Array.isArray(
+                    existingRoles
+                  ) &&
+                  existingRoles.some(
+                    (item) =>
+
+                      item.name
+                        ?.trim()
+                        .toLowerCase() ===
+
+                      value
+                        .trim()
+                        .toLowerCase()
+                  );
+                setRoleExists(
+                  exists
+                );
+
                 setFormData({
+
                   ...formData,
-                  name:
-                    e.target.value,
-                })
-              }
+
+                  name: value,
+
+                });
+
+              }}
               className="w-full border border-gray-300 bg-white text-black p-4 rounded-xl outline-none focus:ring-2 focus:ring-black"
-              required
             />
 
           </div>
@@ -385,12 +457,11 @@ export default function AddRolePage() {
 
           {/* Submit */}
 
-          <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition">
-
+          <button
+            disabled={roleExists}
+            className=" bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed">
             Add Role
-
           </button>
-
         </form>
 
       </div>
