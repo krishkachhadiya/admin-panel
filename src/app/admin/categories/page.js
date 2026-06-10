@@ -99,14 +99,14 @@ export default function CategoriesPage() {
 
       const response =
         await fetch(
-          "/api/pagination"
+          "/api/settings"
         );
 
       const result =
         await response.json();
 
       setLimit(
-        result.data.categories || 10
+        result.data.pagination || 10
       );
 
     } catch (error) {
