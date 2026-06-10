@@ -561,22 +561,21 @@ export default function RolesPage() {
 
       {/* PAGINATION */}
 
-      <div className="flex items-center justify-center gap-2 mt-8">
+      <div className="flex items-center justify-center gap-2 mt-8 text-black">
 
 
         {/* PREV */}
 
-        <button
-          disabled={page === 1}
-          onClick={() =>
-            setPage(page - 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Prev
-
-        </button>
+        {page > 1 && (
+          <button
+            onClick={() =>
+              setPage(page - 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Prev
+          </button>
+        )}
 
 
 
@@ -592,11 +591,10 @@ export default function RolesPage() {
               onClick={() =>
                 setPage(index + 1)
               }
-              className={`px-4 py-2 rounded-lg border transition ${
-                page === index + 1
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              }`}
+              className={`px-4 py-2 rounded-lg border transition ${page === index + 1
+                ? "bg-black text-white"
+                : "bg-white text-black"
+                }`}
             >
 
               {index + 1}
@@ -611,19 +609,16 @@ export default function RolesPage() {
 
         {/* NEXT */}
 
-        <button
-          disabled={
-            page === totalPages
-          }
-          onClick={() =>
-            setPage(page + 1)
-          }
-          className="px-4 py-2 rounded-lg border bg-white disabled:opacity-50"
-        >
-
-          Next
-
-        </button>
+        {page < totalPages && (
+          <button
+            onClick={() =>
+              setPage(page + 1)
+            }
+            className="px-4 py-2 rounded-lg border bg-white"
+          >
+            Next
+          </button>
+        )}
 
       </div>
 
