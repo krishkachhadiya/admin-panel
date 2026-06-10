@@ -102,14 +102,14 @@ export default function CMSPage() {
 
       const response =
         await fetch(
-          "/api/pagination"
+          "/api/settings"
         );
 
       const result =
         await response.json();
 
       setLimit(
-        result.data.cms || 10
+        result.data.pagination || 10
       );
 
     } catch (error) {
