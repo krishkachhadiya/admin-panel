@@ -104,11 +104,11 @@ export default function ProductsPage() {
 
     try {
 
-      const response = await fetch("/api/pagination");
+      const response = await fetch("/api/settings");
 
       const result = await response.json();
 
-      setLimit(result.data.products || 10);
+      setLimit(result.data.pagination || 10);
 
     } catch (error) {
 
