@@ -39,6 +39,9 @@ export default function AdminLayout({
     "/admin/cms":
       "cms",
 
+    "/admin/settings":
+      "global settings",
+
     "/admin/admins":
       "users",
 
@@ -228,9 +231,9 @@ export default function AdminLayout({
           "/admin/cms",
       },
             {
-        name: "Pagination",
+        name: "Global Settings",
         path:
-          "/admin/pagination",
+          "/admin/settings",
       },
        {
         name: "Roles",
@@ -443,6 +446,15 @@ export default function AdminLayout({
 
       currentModule =
         "roles";
+    }
+    else if (
+      pathname.startsWith(
+        "/admin/settings"
+      )
+    ) {
+
+      currentModule =
+        "settings";
     }
 
 

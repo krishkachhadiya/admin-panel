@@ -7,15 +7,9 @@ import {
 
 export default function AdminDashboard() {
 
-  const [
-    products,
-    setProducts,
-  ] = useState([]);
+  const [products,setProducts] = useState([]);
 
-  const [
-    categories,
-    setCategories,
-  ] = useState([]);
+  const [categories,setCategories,] = useState([]);
 
   // ======================
   // FETCH DATA
@@ -37,13 +31,9 @@ export default function AdminDashboard() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/products"
-        );
+      const response = await fetch("/api/products");
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       setProducts(data);
 
@@ -62,13 +52,9 @@ export default function AdminDashboard() {
 
     try {
 
-      const response =
-        await fetch(
-          "/api/categories"
-        );
+      const response = await fetch("/api/categories");
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       setCategories(data);
 
@@ -83,22 +69,16 @@ export default function AdminDashboard() {
   // COUNTS
   // ======================
 
-  // ======================
-  // COUNTS
-  // ======================
-
   const activeProducts =
     products.filter(
       (item) =>
-        item.status ===
-        "active"
+        item.status ==="active"
     );
 
   const inactiveProducts =
     products.filter(
       (item) =>
-        item.status ===
-        "inactive"
+        item.status === "inactive"
     );
 
   const mainCategories =
