@@ -5,7 +5,7 @@ import {
   writeData,
 } from "@/lib/filehandler";
 
-
+import { getAdmin } from "@/lib/auth";
 
 
 // ======================
@@ -16,27 +16,37 @@ export async function GET() {
 
   try {
 
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
     const roles =
       readData(
         "roles.json"
       );
-
-
-
 
     return NextResponse.json({
 
       success: true,
 
       roles,
+
     });
 
   } catch (error) {
 
     console.log(error);
-
-
-
 
     return NextResponse.json(
       {
@@ -60,7 +70,39 @@ export async function POST(
   req
 ) {
 
+
+
   try {
+
+    const admin =
+      await getAdmin();
+
+    if (!admin) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please login first",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      admin.role !==
+      "admin"
+    ) {
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Only admin can create roles",
+        },
+        { status: 403 }
+      );
+    }
 
     const body =
       await req.json();
