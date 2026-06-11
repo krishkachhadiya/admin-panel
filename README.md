@@ -1,120 +1,180 @@
-# 🚀 Next.js Admin Panel
+# 🚀 LOTAS – Business Website & Admin Management System
 
-A modern and fully functional admin panel built using Next.js for managing products, categories, subcategories, and uploaded images.
+A modern full-stack business website and administration panel built using Next.js and React.js.
 
-This project focuses on creating a clean admin-side management system with dynamic filtering, CRUD operations, API routes, and local image handling.
+The system provides complete management of products, categories, CMS pages, website settings, SEO configuration, image uploads, and business content through a centralized admin dashboard.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### 🔐 Authentication
+## 🔐 Authentication
 
 * Admin Login System
-* Session-based Access
-* Protected Admin Pages
+* Session-Based Authentication
+* Protected Admin Routes
 
-### 📦 Product Management
+## 📦 Product Management
 
 * Add Products
 * Edit Products
 * Delete Products
-* Product Image Upload
+* Product Image Gallery
+* Product Status Management
+* Product SEO Management
 * Dynamic Product Filtering
 
-### 🗂️ Category Management
+## 🗂️ Category Management
 
 * Add Categories
 * Edit Categories
-* Manage Category Structure
+* Delete Categories
+* Category Status Management
 
-### 🧩 Subcategory Management
+## 📄 CMS Management
 
-* Create Subcategories
-* Connect Categories & Products
-* Dynamic Relations
+* About Us Page Management
+* Contact Us Page Management
+* Dynamic Meta Title
+* Dynamic Meta Description
 
-### 🖼️ Upload System
+## ⚙️ Website Settings
+
+* Company Information
+* Logo Management
+* Favicon Management
+* Open Graph Image Management
+* Contact Details
+* Social Media Links
+
+## 🖼️ Upload System
 
 * Local Image Upload
-* Dynamic Product Images
+* Dynamic Image Preview
 * Upload API Handling
+* Media Reusability
+
+## 🌐 Frontend Website
+
+* Home Page
+* Product Listing Page
+* Product Details Page
+* About Us Page
+* Contact Us Page
+* Responsive Design
 
 ---
 
-# 🛠️ Tech Stack
+# 🔍 SEO Features
 
-| Technology | Usage                  |
-| ---------- | ---------------------- |
-| Next.js    | Frontend + Backend     |
-| React.js   | UI Development         |
-| JavaScript | Application Logic      |
-| Node.js    | API Routes             |
-| CSS        | Styling                |
-| JSON       | Temporary Data Storage |
+## Metadata
+
+* Dynamic Meta Titles
+* Dynamic Meta Descriptions
+
+## Social Sharing
+
+* Open Graph Tags
+* Twitter Card Tags
+
+## Structured Data (Schema)
+
+* Organization Schema
+* Product Schema
+* CollectionPage Schema
+* AboutPage Schema
+* ContactPage Schema
+
+## Technical SEO
+
+* Dynamic Metadata Generation
+* SEO-Friendly URLs
+* Semantic HTML Structure
+
+---
+
+# 🛠️ Technology Stack
+
+| Technology         | Usage                        |
+| ------------------ | ---------------------------- |
+| Next.js 16         | Frontend & Backend Framework |
+| React.js           | User Interface Development   |
+| JavaScript         | Application Logic            |
+| Tailwind CSS       | Styling                      |
+| Node.js            | Runtime Environment          |
+| JSON Files         | Data Storage                 |
+| Next.js API Routes | Backend APIs                 |
 
 ---
 
 # 📁 Project Structure
 
-```bash id="n7x4qp"
+```text
 src/
 │
 ├── app/
 │   ├── admin/
 │   ├── api/
-│   └── login/
+│   └── frontend/
 │
-├── data/
+├── components/
 │
 ├── lib/
 │
-└── public/uploads/
+└── data/
+
+public/
+└── uploads/
 ```
 
 ---
 
-# ⚡ Getting Started
+# ⚡ Installation
 
-### Clone Repository
+## Install Dependencies
 
-```bash id="j2m8yw"
-git clone https://github.com/krishkachhadiya/admin-panel.git
-```
-
-### Move Into Project
-
-```bash id="r4k1zt"
-cd admin-panel
-```
-
-### Install Dependencies
-
-```bash id="w8c3nx"
+```bash
 npm install
 ```
 
-### Run Development Server
+## Run Development Server
 
-```bash id="f5v9ae"
+```bash
 npm run dev
 ```
 
-### Open Browser
+Application URL:
 
-```bash id="u6p2lk"
+```text
 http://localhost:3000
 ```
 
 ---
 
-# 🔌 API Routes
+# 🏗️ Production Build
 
-```bash id="v3n7bt"
+Generate Production Build:
+
+```bash
+npm run build
+```
+
+Start Production Server:
+
+```bash
+npm start
+```
+
+---
+
+# 🔌 API Modules
+
+```text
 /api/login
 /api/products
 /api/categories
-/api/subcategories
+/api/cms
+/api/settings
 /api/upload
 ```
 
@@ -122,40 +182,56 @@ http://localhost:3000
 
 # 📸 Upload Storage
 
-All uploaded images are stored locally inside:
+All uploaded files are stored locally in:
 
-```bash id="s9d4xo"
+```text
 public/uploads
 ```
 
 ---
 
-# 🎯 Main Highlights
+# 🎯 Key Highlights
 
-✅ Dynamic Admin Dashboard
-✅ Product CRUD Operations
-✅ Category/Subcategory Linking
+✅ Complete Admin Panel
+
+✅ Product Management System
+
+✅ Category Management System
+
+✅ CMS Management
+
+✅ Website Settings Management
+
+✅ Dynamic SEO System
+
+✅ Structured Data Implementation
+
 ✅ Image Upload Functionality
-✅ API Route Handling
-✅ JSON-based Data Management
-✅ Responsive Layout
+
+✅ Responsive User Interface
+
+✅ Next.js API Integration
+
+✅ Production Build Tested
 
 ---
 
 # 🚧 Future Improvements
 
 * MongoDB Integration
-* JWT Authentication
-* Role-based Permissions
-* Search & Pagination
-* Dashboard Analytics
+* Role-Based Permissions
 * Cloudinary Image Storage
-* Dark Mode
+* Dashboard Analytics
+* Advanced Search
+* Bulk Import/Export
+* Multi-Admin Support
 
 ---
 
 # 👨‍💻 Developer
 
-### Krish Kachhadiya
+**Sahil Kachhadiya**
 
-Built using Next.js & React.js
+Built with ❤️ using Next.js, React.js and Tailwind CSS.
+
+Internship Project – LOTAS Business Website & Admin Panel
