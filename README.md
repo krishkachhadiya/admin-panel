@@ -1,83 +1,163 @@
 # 🚀 LOTAS – Business Website & Admin Management System
 
-A modern full-stack business website and administration panel built using Next.js and React.js.
+A modern full-stack business website and administration system developed using Next.js and React.js.
 
-The system provides complete management of products, categories, CMS pages, website settings, SEO configuration, image uploads, and business content through a centralized admin dashboard.
+LOTAS provides a complete content and product management solution with role-based access control, SEO management, CMS functionality, image uploads, and dynamic website administration through a centralized admin dashboard.
 
 ---
 
-# ✨ Features
+# 📌 Project Overview
 
-## 🔐 Authentication
+The system is designed to allow administrators and authorized users to manage website content, products, categories, SEO settings, and business information without modifying the source code.
 
-* Admin Login System
+The project follows a scalable architecture using Next.js API Routes, JSON-based data storage, dynamic metadata generation, and structured SEO implementation.
+
+---
+
+# ✨ Core Features
+
+## 🌐 Website Module
+
+### Home Page
+
+* Dynamic Website Content
+* Featured Categories
+* Featured Products
+* SEO Optimized Layout
+
+### Product Module
+
+* Product Listing
+* Product Details Page
+* Product Image Gallery
+* Dynamic Product Information
+* SEO-Friendly Product URLs
+
+### CMS Pages
+
+* About Us Page
+* Contact Us Page
+* Dynamic Content Management
+* SEO Metadata Management
+
+### Responsive Design
+
+* Mobile Friendly Layout
+* Tablet Compatibility
+* Desktop Optimization
+
+---
+
+# 🔐 Authentication & Authorization
+
+* Secure Admin Login System
 * Session-Based Authentication
 * Protected Admin Routes
+* Role-Based Access Control (RBAC)
+* Module-Level Permission Management
+* Unauthorized Access Protection
+* Dynamic User Permission Validation
+* Secure Route Authorization
 
-## 📦 Product Management
+---
+
+# 👥 User & Role Management
+
+* User Management
+* Role Management
+* Permission Management
+* Module Access Control
+* Dynamic Role Assignment
+* User Authorization System
+
+### Supported Permissions
+
+* Dashboard Access
+* Product Management Access
+* Category Management Access
+* CMS Management Access
+* Settings Management Access
+* User Management Access
+
+---
+
+# 📦 Product Management
 
 * Add Products
 * Edit Products
 * Delete Products
-* Product Image Gallery
-* Product Status Management
+* Product Status Control
 * Product SEO Management
+* Product Image Management
 * Dynamic Product Filtering
+* Product Metadata Configuration
 
-## 🗂️ Category Management
+---
 
-* Add Categories
-* Edit Categories
+# 🗂️ Category Management
+
+* Create Categories
+* Update Categories
 * Delete Categories
 * Category Status Management
+* Dynamic Category Structure
 
-## 📄 CMS Management
+---
 
-* About Us Page Management
-* Contact Us Page Management
-* Dynamic Meta Title
-* Dynamic Meta Description
+# 📄 CMS Management
 
-## ⚙️ Website Settings
+* About Us Content Management
+* Contact Page Content Management
+* Dynamic Meta Title Management
+* Dynamic Meta Description Management
+* SEO Content Management
+
+---
+
+# ⚙️ Website Settings Management
 
 * Company Information
+* Business Details
+* Contact Information
 * Logo Management
 * Favicon Management
 * Open Graph Image Management
-* Contact Details
 * Social Media Links
+* SEO Settings
 
-## 🖼️ Upload System
+---
+
+# 🖼️ Media & Upload Management
 
 * Local Image Upload
 * Dynamic Image Preview
+* Media Selection
 * Upload API Handling
-* Media Reusability
+* Product Image Gallery Management
 
-## 🌐 Frontend Website
+### Upload Location
 
-* Home Page
-* Product Listing Page
-* Product Details Page
-* About Us Page
-* Contact Us Page
-* Responsive Design
+```text
+public/uploads
+```
 
 ---
 
 # 🔍 SEO Features
 
-## Metadata
+## Metadata Management
 
 * Dynamic Meta Titles
 * Dynamic Meta Descriptions
+* Page-Specific SEO Settings
 
-## Social Sharing
+## Social Media Optimization
 
 * Open Graph Tags
 * Twitter Card Tags
+* Social Sharing Images
 
-## Structured Data (Schema)
+## Structured Data (Schema.org)
 
 * Organization Schema
 * Product Schema
@@ -87,23 +167,23 @@ The system provides complete management of products, categories, CMS pages, webs
 
 ## Technical SEO
 
-* Dynamic Metadata Generation
-* SEO-Friendly URLs
 * Semantic HTML Structure
+* Dynamic Metadata Generation
+* SEO-Friendly URL Structure
 
 ---
 
 # 🛠️ Technology Stack
 
-| Technology         | Usage                        |
-| ------------------ | ---------------------------- |
-| Next.js 16         | Frontend & Backend Framework |
-| React.js           | User Interface Development   |
-| JavaScript         | Application Logic            |
-| Tailwind CSS       | Styling                      |
-| Node.js            | Runtime Environment          |
-| JSON Files         | Data Storage                 |
-| Next.js API Routes | Backend APIs                 |
+| Technology         | Purpose                     |
+| ------------------ | --------------------------- |
+| Next.js 16         | Full-Stack Framework        |
+| React.js           | User Interface Development  |
+| JavaScript         | Application Logic           |
+| Tailwind CSS       | Styling & Responsive Design |
+| Node.js            | Runtime Environment         |
+| JSON Files         | Data Storage                |
+| Next.js API Routes | Backend APIs                |
 
 ---
 
@@ -121,7 +201,10 @@ src/
 │
 ├── lib/
 │
-└── data/
+├── data/
+│
+└── middleware/
+│
 
 public/
 └── uploads/
@@ -129,7 +212,22 @@ public/
 
 ---
 
-# ⚡ Installation
+# 🔌 API Modules
+
+```text
+/api/login
+/api/users
+/api/roles
+/api/products
+/api/categories
+/api/cms
+/api/settings
+/api/upload
+```
+
+---
+
+# ⚡ Installation Guide
 
 ## Install Dependencies
 
@@ -151,7 +249,7 @@ http://localhost:3000
 
 ---
 
-# 🏗️ Production Build
+# 🏗️ Production Deployment
 
 Generate Production Build:
 
@@ -167,32 +265,37 @@ npm start
 
 ---
 
-# 🔌 API Modules
+# 🌍 Environment Variables
 
-```text
-/api/login
-/api/products
-/api/categories
-/api/cms
-/api/settings
-/api/upload
+Create:
+
+```env
+.env.local
+```
+
+Example:
+
+```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+For Production:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 
 ---
 
-# 📸 Upload Storage
+# 🎯 Project Highlights
 
-All uploaded files are stored locally in:
+✅ Complete Admin Management System
 
-```text
-public/uploads
-```
+✅ Role-Based Access Control (RBAC)
 
----
+✅ Module-Level Permission Management
 
-# 🎯 Key Highlights
-
-✅ Complete Admin Panel
+✅ Secure Authentication System
 
 ✅ Product Management System
 
@@ -202,11 +305,13 @@ public/uploads
 
 ✅ Website Settings Management
 
-✅ Dynamic SEO System
+✅ Dynamic SEO Configuration
 
 ✅ Structured Data Implementation
 
-✅ Image Upload Functionality
+✅ Open Graph & Twitter Cards
+
+✅ Image Upload System
 
 ✅ Responsive User Interface
 
@@ -216,15 +321,15 @@ public/uploads
 
 ---
 
-# 🚧 Future Improvements
+# 🚧 Future Enhancements
 
-* MongoDB Integration
-* Role-Based Permissions
-* Cloudinary Image Storage
-* Dashboard Analytics
-* Advanced Search
-* Bulk Import/Export
-* Multi-Admin Support
+* Database Integration (MongoDB/PostgreSQL)
+* Cloud Storage Integration
+* Email Notification System
+* Advanced Analytics Dashboard
+* Activity Logs
+* Multi-Language Support
+* Two-Factor Authentication (2FA)
 
 ---
 
@@ -232,6 +337,6 @@ public/uploads
 
 **Krish Kachhadiya**
 
-Built with ❤️ using Next.js, React.js and Tailwind CSS.
+Internship Project – LOTAS Business Website & Admin Management System
 
-Internship Project – LOTAS Business Website & Admin Panel
+Built with ❤️ using Next.js, React.js, Tailwind CSS, and Node.js.
