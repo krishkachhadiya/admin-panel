@@ -230,7 +230,7 @@ public/uploads
 
 # 👨‍💻 Developer
 
-**Sahil Kachhadiya**
+**Krish Kachhadiya**
 
 Built with ❤️ using Next.js, React.js and Tailwind CSS.
 
