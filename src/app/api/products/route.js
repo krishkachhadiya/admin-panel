@@ -18,16 +18,7 @@ export async function GET() {
     const admin =
       await getAdmin();
 
-    if (!admin) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Please login first",
-        },
-        { status: 401 }
-      );
-    }
+   
 
     const products =
       readData(
