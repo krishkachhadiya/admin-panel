@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const [formData,setFormData] = useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
@@ -38,7 +38,7 @@ export default function LoginPage() {
     try {
 
       const response =
-      
+
         await fetch(
           "/api/login",
           {
@@ -79,10 +79,10 @@ export default function LoginPage() {
           )
         );
 
-      
 
-        window.location.href =
-          "/admin";
+
+
+        router.push("/admin");
 
       } else {
 
@@ -116,10 +116,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
 
-      
+
       <div className="w-full max-w-md bg-white shadow-2xl rounded-3xl p-10">
 
-        
+
         {/* Header */}
 
         <div className="text-center mb-10">

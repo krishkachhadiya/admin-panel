@@ -1,20 +1,12 @@
 import { NextResponse } from "next/server";
-
-import {
-  readData,
-  writeData,
-} from "@/lib/filehandler";
-
-
+import { readData, writeData } from "@/lib/filehandler";
 
 // ======================
 // GET ADMINS
 // ======================
-
 export async function GET() {
   try {
-    const admins =
-      readData("admins.json");
+    const admins = readData("admins.json");
 
     return NextResponse.json({
       success: true,
@@ -26,46 +18,31 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Internal Server Error",
+        message: "Internal Server Error",
       },
       { status: 500 }
     );
   }
 }
 
-
-
 // ======================
 // CREATE ADMIN
 // ======================
-
 export async function POST(req) {
   try {
     const body = await req.json();
-
-    const admins =
-      readData("admins.json");
+    const admins = readData("admins.json");
 
     const newAdmin = {
       id: Date.now(),
-
       name: body.name,
-
       email: body.email,
-
       password: body.password,
-
-      status:
-        body.status || "active",
+      status: body.status || "active",
     };
 
     admins.push(newAdmin);
-
-    writeData(
-      "admins.json",
-      admins
-    );
+    writeData("admins.json", admins);
 
     return NextResponse.json({
       success: true,
@@ -77,8 +54,7 @@ export async function POST(req) {
     return NextResponse.json(
       {
         success: false,
-        message:
-          "Internal Server Error",
+        message: "Internal Server Error",
       },
       { status: 500 }
     );
