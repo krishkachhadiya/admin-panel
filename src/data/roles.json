@@ -1,26 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "staff",
-    "permissions": {
-      "products": {
-        "create": true,
-        "edit": true,
-        "delete": true
-      },
-      "categories": {
-        "create": true,
-        "edit": true,
-        "delete": true
-      },
-      "subcategories": {
-        "create": true,
-        "edit": true,
-        "delete": true
-      }
-    }
-  },
-  {
     "id": 3,
     "name": "admin",
     "permissions": {
@@ -52,23 +31,75 @@
     "permissions": {
       "products": {
         "create": false,
-        "edit": true,
-        "delete": true
+        "edit": false,
+        "delete": false
       },
       "categories": {
-        "create": true,
-        "edit": true,
-        "delete": true
+        "create": false,
+        "edit": false,
+        "delete": false
       },
       "subcategories": {
-        "create": true,
-        "edit": true,
-        "delete": true
+        "create": false,
+        "edit": false,
+        "delete": false
       },
       "cms": {
         "create": true,
         "edit": true,
         "delete": true
+      }
+    }
+  },
+  {
+    "id": 1780576656682,
+    "name": "staff",
+    "permissions": {
+      "products": {
+        "create": true,
+        "edit": false,
+        "delete": false
+      },
+      "categories": {
+        "create": true,
+        "edit": false,
+        "delete": false
+      },
+      "cms": {
+        "create": true,
+        "edit": false,
+        "delete": false
+      },
+      "subcategories": {
+        "create": true,
+        "edit": false,
+        "delete": false
+      }
+    }
+  },
+  {
+    "id": 1781269152619,
+    "name": "labor",
+    "permissions": {
+      "products": {
+        "create": false,
+        "edit": false,
+        "delete": false
+      },
+      "categories": {
+        "create": true,
+        "edit": false,
+        "delete": false
+      },
+      "cms": {
+        "create": false,
+        "edit": true,
+        "delete": false
+      },
+      "subcategories": {
+        "create": true,
+        "edit": false,
+        "delete": false
       }
     }
   }

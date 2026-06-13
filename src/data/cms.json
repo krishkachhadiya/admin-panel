@@ -3,18 +3,30 @@
     "id": 1,
     "title": "About Us",
     "slug": "about-us",
-    "metaTitle": "About Us",
-    "metaDescription": "<p>About company</p>",
-    "content": "<h1>About Us</h1><p>Content here</p>",
-    "status": "active"
+    "metaTitle": "About Us | Lotas",
+    "metaDescription": "Learn more about Lotas, our mission, vision and commitment to quality products.",
+    "content": "",
+    "status": "active",
+    "updatedAt": "2026-06-10T05:39:01.867Z"
   },
   {
-    "id": 1779702198820,
-    "title": "abc",
-    "slug": "dsfsdf",
-    "metaTitle": "dvsd",
-    "metaDescription": "fdsfsd",
-    "content": "fsfdfsds",
-    "status": "active"
+    "id": 1781070848271,
+    "title": "Contact Us",
+    "slug": "contact-us",
+    "metaTitle": "Contact LOTAS Support | Customer Care & Help Center",
+    "metaDescription": "Need help with your order? Contact the LOTAS customer service team. Get 24/7 support for tracking, returns, fashion, electronics, and furniture inquiries.",
+    "content": "",
+    "status": "active",
+    "createdAt": "2026-06-10T05:54:08.271Z"
+  },
+  {
+    "id": 1781071992196,
+    "title": "products",
+    "slug": "products",
+    "metaTitle": "Browse Products Online | Fashion, Electronics & Furniture | LOTAS",
+    "metaDescription": "Explore the complete catalog at LOTAS. Shop trending apparel, top-tier electronics, and premium home furniture all in one place. Discover unbeatable deals today.",
+    "content": "",
+    "status": "active",
+    "createdAt": "2026-06-10T06:13:12.196Z"
   }
 ]

@@ -3,55 +3,231 @@
     "id": 1,
     "title": "Furniture",
     "slug": "furniture",
+    "metaTitle": "Best Furniture Products",
+    "metaDescription": "Buy premium furniture products online.",
+    "parent": null,
     "status": "active",
-    "subcategories": [
-      {
-        "id": 101,
-        "title": "Sofa",
-        "slug": "sofa",
-        "parentCategory": "Furniture",
-        "status": "active"
-      }
-    ],
-    "updatedAt": "2026-05-25T06:34:39.523Z"
+    "createdAt": "2026-05-25T06:34:39.523Z",
+    "updatedAt": "2026-05-30T07:08:28.705Z"
+  },
+  {
+    "id": 101,
+    "title": "Sofa",
+    "slug": "sofa",
+    "metaTitle": "Best Sofa Collection",
+    "metaDescription": "Explore stylish and comfortable sofas.",
+    "parent": 1,
+    "status": "active",
+    "createdAt": "2026-05-25T06:34:39.523Z",
+    "updatedAt": "2026-06-01T09:52:12.888Z"
   },
   {
     "id": 2,
     "title": "Electronics",
     "slug": "electronics",
+    "metaTitle": "Best Electronics Products",
+    "metaDescription": "Buy latest electronics products online.",
+    "parent": null,
     "status": "active",
-    "subcategories": [
-      {
-        "id": 201,
-        "title": "Mobile",
-        "slug": "mobile",
-        "parentCategory": "Electronics",
-        "status": "active"
-      },
-      {
-        "id": 202,
-        "title": "Laptop",
-        "parentCategory": "Electronics",
-        "slug": "laptop",
-        "status": "active"
-      }
-    ],
-    "updatedAt": "2026-05-22T13:03:10.470Z"
+    "createdAt": "2026-05-26T11:20:06.188Z",
+    "updatedAt": "2026-05-29T05:18:26.199Z"
+  },
+  {
+    "id": 201,
+    "title": "Mobile",
+    "slug": "mobile",
+    "metaTitle": "Latest Mobile Phones",
+    "metaDescription": "Explore latest smartphones and mobile phones.",
+    "parent": 2,
+    "status": "active",
+    "createdAt": "2026-05-26T11:20:06.188Z",
+    "updatedAt": "2026-05-26T11:20:06.188Z"
   },
   {
     "id": 1779457745029,
     "title": "Fashion",
     "slug": "fashion",
+    "metaTitle": "Trending Fashion Products",
+    "metaDescription": "Explore latest fashion collections online.",
+    "parent": null,
     "status": "active",
     "createdAt": "2026-05-22T13:49:05.029Z",
-    "subcategories": [
-      {
-        "id": 1779457776076,
-        "title": "jeans",
-        "slug": "jeans",
-        "status": "active"
-      }
-    ],
     "updatedAt": "2026-05-23T05:24:53.458Z"
+  },
+  {
+    "id": 1779878383883,
+    "title": "buds",
+    "slug": "buds",
+    "metaTitle": "top class buds",
+    "metaDescription": "krish kachhadoiya\n",
+    "parent": "2",
+    "status": "active",
+    "createdAt": "2026-05-27T10:39:43.883Z",
+    "updatedAt": "2026-05-27T10:44:38.853Z"
+  },
+  {
+    "id": 1780030319312,
+    "title": "bed",
+    "slug": "bed",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": "1",
+    "status": "active",
+    "createdAt": "2026-05-29T04:51:59.312Z",
+    "updatedAt": "2026-05-29T04:52:18.069Z"
+  },
+  {
+    "id": 1780300438244,
+    "title": "vivo",
+    "slug": "vivo",
+    "metaTitle": "abc",
+    "metaDescription": "abc",
+    "parent": 201,
+    "status": "active",
+    "createdAt": "2026-06-01T07:53:58.244Z",
+    "updatedAt": "2026-06-12T06:56:04.756Z"
+  },
+  {
+    "id": 1780307549004,
+    "title": "3 seater sofa",
+    "slug": "3-seater-sofa",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 101,
+    "status": "active",
+    "createdAt": "2026-06-01T09:52:29.004Z",
+    "updatedAt": "2026-06-01T09:52:29.004Z"
+  },
+  {
+    "id": 1780308638130,
+    "title": "king size bed",
+    "slug": "king-size-bed",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1780030319312,
+    "status": "active",
+    "createdAt": "2026-06-01T10:10:38.130Z",
+    "updatedAt": "2026-06-01T12:18:55.482Z"
+  },
+  {
+    "id": 1780309600396,
+    "title": "abc",
+    "slug": "abc",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 101,
+    "status": "active",
+    "createdAt": "2026-06-01T10:26:40.396Z",
+    "updatedAt": "2026-06-01T10:26:40.396Z"
+  },
+  {
+    "id": 1780318702085,
+    "title": "samsung",
+    "slug": "samsung",
+    "metaTitle": "samsung",
+    "metaDescription": "samsung",
+    "parent": 201,
+    "status": "active",
+    "createdAt": "2026-06-01T12:58:22.085Z",
+    "updatedAt": "2026-06-12T06:55:05.778Z"
+  },
+  {
+    "id": 1780318741549,
+    "title": "Apple",
+    "slug": "apple",
+    "metaTitle": "abc",
+    "metaDescription": "abc",
+    "parent": 201,
+    "status": "active",
+    "createdAt": "2026-06-01T12:59:01.549Z",
+    "updatedAt": "2026-06-12T06:54:27.771Z"
+  },
+  {
+    "id": 1780318805028,
+    "title": "Laptop",
+    "slug": "laptop",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 2,
+    "status": "active",
+    "createdAt": "2026-06-01T13:00:05.028Z",
+    "updatedAt": "2026-06-01T13:00:05.028Z"
+  },
+  {
+    "id": 1780318827630,
+    "title": "lenovo",
+    "slug": "lenovo",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1780318805028,
+    "status": "active",
+    "createdAt": "2026-06-01T13:00:27.630Z",
+    "updatedAt": "2026-06-01T13:00:27.630Z"
+  },
+  {
+    "id": 1780375893051,
+    "title": "Men",
+    "slug": "men",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1779457745029,
+    "status": "active",
+    "createdAt": "2026-06-02T04:51:33.051Z",
+    "updatedAt": "2026-06-02T04:51:33.051Z"
+  },
+  {
+    "id": 1780375928593,
+    "title": "Woman",
+    "slug": "woman",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1779457745029,
+    "status": "active",
+    "createdAt": "2026-06-02T04:52:08.593Z",
+    "updatedAt": "2026-06-02T04:52:08.593Z"
+  },
+  {
+    "id": 1780376123955,
+    "title": "jeans for man",
+    "slug": "jeans-for-man",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1780375893051,
+    "status": "active",
+    "createdAt": "2026-06-02T04:55:23.955Z",
+    "updatedAt": "2026-06-02T04:56:59.569Z"
+  },
+  {
+    "id": 1780376133283,
+    "title": "jeans for woman",
+    "slug": "jeans-for-woman",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": 1780375928593,
+    "status": "active",
+    "createdAt": "2026-06-02T04:55:33.283Z",
+    "updatedAt": "2026-06-02T04:56:42.447Z"
+  },
+  {
+    "id": 1780569008717,
+    "title": "Gamings",
+    "slug": "gamings",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": null,
+    "status": "active",
+    "createdAt": "2026-06-04T10:30:08.717Z",
+    "updatedAt": "2026-06-12T12:42:43.988Z"
+  },
+  {
+    "id": 1781325047891,
+    "title": "gamingsdfgfd",
+    "slug": "gamingsdfgfd",
+    "metaTitle": "",
+    "metaDescription": "",
+    "parent": null,
+    "status": "active",
+    "createdAt": "2026-06-13T04:30:47.891Z",
+    "updatedAt": "2026-06-13T04:31:21.168Z"
   }
 ]

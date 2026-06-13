@@ -26,5 +26,14 @@
     "email": "abc@gmail.com",
     "password": "123",
     "role": "staff"
+  },
+  {
+    "id": 1781270885819,
+    "name": "skjjdsjfd",
+    "email": "skdjflskd@gmail.com",
+    "password": "Sad@2545",
+    "role": "staff",
+    "permissions": {},
+    "createdAt": "2026-06-12T13:28:05.819Z"
   }
 ]

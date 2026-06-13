@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1780726780021,
+    "name": "Krish Kachhadiya",
+    "email": "krish@gmail.com",
+    "phone": "9099519006",
+    "subject": "im interested work with you",
+    "message": "abc",
+    "status": "new",
+    "createdAt": "2026-06-06T06:19:40.021Z"
+  },
+  {
+    "id": 1780730599073,
+    "name": "Krish Kachhadiya",
+    "email": "krish@gmail.com",
+    "phone": "9099519006",
+    "subject": "sdfdsds",
+    "message": "ssdfsavsdd",
+    "status": "new",
+    "createdAt": "2026-06-06T07:23:19.073Z"
+  },
+  {
+    "id": 1781086255300,
+    "name": "Krish Kachhadiya",
+    "email": "krishkachhadiya20@gmail.com",
+    "phone": "9099519006",
+    "subject": "I want purchase ",
+    "message": "I'm krish ",
+    "status": "new",
+    "createdAt": "2026-06-10T10:10:55.300Z"
+  },
+  {
+    "id": 1781242317578,
+    "name": "bhavya",
+    "email": "jay@gmail.com",
+    "phone": "9875624587",
+    "subject": "maths",
+    "message": "fsdczxczxc",
+    "status": "new",
+    "createdAt": "2026-06-12T05:31:57.578Z"
+  },
+  {
+    "id": 1781263881487,
+    "name": "jay",
+    "email": "jay@gmail.com",
+    "phone": "7854878546",
+    "subject": "adsda",
+    "message": "asdassads",
+    "status": "new",
+    "createdAt": "2026-06-12T11:31:21.487Z"
+  }
+]

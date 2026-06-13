@@ -1,36 +1,11 @@
 [
   {
-    "id": 1779261233614,
-    "title": "iPhone 16 Pro",
-    "category": "Electronics",
-    "description": "Latest Apple Phone 16 ",
-    "metaTitle": "Buy iPhone 15",
-    "metaDescription": "Apple iPhone 15 details",
-    "status": "active",
-    "images": [
-      "/uploads/1779366221434-gm33.jpg"
-    ],
-    "specifications": [
-      {
-        "key": "RAM",
-        "value": "8GB"
-      },
-      {
-        "key": "Storage",
-        "value": "256GB"
-      }
-    ],
-    "createdAt": "2026-05-20T07:13:53.614Z",
-    "updatedAt": "2026-05-22T10:36:24.136Z",
-    "subcategory": "Mobile"
-  },
-  {
     "id": 1779339511346,
-    "title": "The Home Centre Lexus Chest of 4 Drawers",
-    "category": "Furniture",
-    "description": " brown perfectly meets the description for a durable and stylish storage unit",
-    "metaTitle": "Buy Home Centre Lexus 4-Drawer Chest | Brown Storage Drawers",
-    "metaDescription": "Upgrade your bedroom with the Home Centre Lexus Chest of Drawers in brown. Featuring 4 spacious drawers and a durable engineered wood design with a scratch-resistant melamine finish, it is the perfect space-saving storage solution. Shop now for organized, clutter-free living!",
+    "title": "3 Seater Sofa",
+    "category": 1780307549004,
+    "description": "<p> brown perfectly meets the description for a durable and stylish storage unit.</p>",
+    "metaTitle": "",
+    "metaDescription": "",
     "status": "active",
     "images": [
       "/uploads/1779365597397-sofa.jpg"
@@ -40,15 +15,16 @@
       "type:wooden"
     ],
     "createdAt": "2026-05-21T04:58:31.346Z",
-    "updatedAt": "2026-05-22T05:59:44.931Z",
-    "subcategory": "Bed"
+    "updatedAt": "2026-06-12T07:50:48.308Z",
+    "subcategory": "bed",
+    "slug": "3-seater-sofa"
   },
   {
     "id": 1779350077474,
     "title": "Samsung Galaxy S22",
-    "description": "The Samsung Galaxy S22 is a compact 2022 flagship featuring a 6.1-inch 120Hz AMOLED display, Snapdragon 8 Gen 1/Exynos 2200 processor, and a 50MP triple camera system",
+    "description": "<p><strong>The Samsung Galaxy S22</strong> is a compact 2022 flagship featuring a 6.1-inch 120Hz AMOLED display, Snapdragon 8 Gen 1/Exynos 2200 processor, and a 50MP triple camera system</p>",
     "metaTitle": "Buy Samsung Galaxy S22 5G | Best Price & Offers",
-    "metaDescription": " Experience epic Nightography, a 4nm processor, and an all-day battery with the Samsung Galaxy S22 5G. Compare prices and grab the best offers online.",
+    "metaDescription": "Experience epic Nightography, a 4nm processor, and an all-day battery with the Samsung Galaxy S22 5G. Compare prices and grab the best offers online.",
     "status": "active",
     "images": [
       "/uploads/1779366199279-s22ultra.png"
@@ -59,16 +35,17 @@
       ""
     ],
     "createdAt": "2026-05-21T07:54:37.474Z",
-    "category": "Electronics",
-    "updatedAt": "2026-05-22T10:36:52.955Z",
-    "subcategory": "Mobile"
+    "category": 1780318702085,
+    "updatedAt": "2026-06-01T12:58:39.357Z",
+    "subcategory": "Mobile",
+    "slug": "samsung-galaxy-s22"
   },
   {
     "id": 1779362315603,
-    "title": "iPhone 16 Pro1",
-    "description": "Latest Apple Phone 16 ",
-    "metaTitle": "Buy iPhone 15",
-    "metaDescription": "Apple iPhone 15 details",
+    "title": "iPhone 16 Pro",
+    "description": "<p><strong>Latest Apple Phone 16 </strong></p>",
+    "metaTitle": "Apple iPhone 16 Pro: Titanium Design, 5X Telephoto",
+    "metaDescription": "Discover the Apple iPhone 16 Pro. Featuring a durable titanium design, a stunning 6.3-inch Super Retina XDR display, and a 48MP Pro camera system. Buy or compare prices today.",
     "status": "active",
     "images": [
       "/uploads/1779362284150-iphone.jpg"
@@ -80,17 +57,18 @@
       "\"value\": \"256GB\"\n  }\n]"
     ],
     "createdAt": "2026-05-21T11:18:35.603Z",
-    "category": "Electronics",
-    "updatedAt": "2026-05-22T10:37:07.544Z",
-    "subcategory": "Mobile"
+    "category": 1780318741549,
+    "updatedAt": "2026-06-12T10:24:18.408Z",
+    "subcategory": "Mobile",
+    "slug": "iphone-16-pro"
   },
   {
     "id": 1779365781214,
-    "title": "bed",
+    "title": "king size bed",
     "description": "bed",
     "metaTitle": "",
     "metaDescription": "",
-    "status": "inactive",
+    "status": "active",
     "images": [
       "/uploads/1779365772640-bed.jpg"
     ],
@@ -99,7 +77,104 @@
     ],
     "createdAt": "2026-05-21T12:16:21.214Z",
     "subcategory": "Bed",
-    "category": "Furniture",
-    "updatedAt": "2026-05-25T11:39:20.209Z"
+    "category": 1780308638130,
+    "updatedAt": "2026-06-03T11:53:20.844Z",
+    "slug": "king-size-bed"
+  },
+  {
+    "id": 1779950134583,
+    "title": "Lenovo Laptop",
+    "slug": "lenovo-laptop",
+    "description": "<p>Best For programer and also gamer with high permance&nbsp;</p>",
+    "metaTitle": "Lenovo Laptop For Programer",
+    "metaDescription": "Best Laptop For Programmer and Gamer With High Perfomance WIth In Your buged",
+    "category": 1780318827630,
+    "subcategory": "Laptop",
+    "status": "active",
+    "images": [
+      "/uploads/1779950226000-lenovo.png",
+      "/uploads/1780483316879-laptop.png",
+      "/uploads/1780483320855-tv.png"
+    ],
+    "specifications": [
+      "Windows:11pro",
+      "RAM:16GB",
+      "ROM:256"
+    ],
+    "createdAt": "2026-05-28T06:35:34.583Z",
+    "updatedAt": "2026-06-03T10:42:03.347Z"
+  },
+  {
+    "id": 1780057400806,
+    "title": "vivo y200",
+    "slug": "vivo-y200",
+    "description": "<p>abcs</p>",
+    "metaTitle": "krihd",
+    "metaDescription": "krish phones",
+    "category": 1780300438244,
+    "subcategory": "Mobile",
+    "status": "active",
+    "images": [
+      "/uploads/1780057388392-gm13.png",
+      "/uploads/1780482847970-gm33.jpg"
+    ],
+    "specifications": [
+      "to:kris",
+      "krish:xvfdjgdjf"
+    ],
+    "createdAt": "2026-05-29T12:23:20.806Z",
+    "updatedAt": "2026-06-05T06:52:27.597Z"
+  },
+  {
+    "id": 1781244893204,
+    "title": "Jack & Jones Oversized Drop Shoulder Pure Cotton T-Shirt",
+    "slug": "jack-jones-oversized-drop-shoulder-t-shirt",
+    "description": "<p>The <response-element class=\"\" ng-version=\"0.0.0-PLACEHOLDER\"><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><product-link _nghost-ng-c1701503077=\"\" class=\"ng-star-inserted\"><a _ngcontent-ng-c1701503077=\"\" target=\"_blank\" rel=\"noopener noreferrer\" externallink=\"\" _nghost-ng-c496452296=\"\" href=\"https://google.com/search?q=Jack+%26+Jones+Oversized+Drop+Shoulder+Pure+Cotton+T-Shirt+(L)+by+Myntra&amp;prds=gpcid%3A2138217989672257968%2CheadlineOfferDocid%3A5853288526353200793%2Cproductid%3A5853288526353200793%2Cpvo%3A38%2Cpvt%3Ahg%2Crds%3APC_2138217989672257968%7CPROD_PC_2138217989672257968&amp;ibp=oshop&amp;gemcid=c_1659c98f87432e83&amp;gemrid=r_5bf2123a9483f922&amp;pvo=38&amp;opi=103135050&amp;gl=IN&amp;hl=en&amp;noiga=1\">Jack &amp; Jones Oversized Drop Shoulder Pure Cotton T-Shirt</a></product-link><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----><!----></response-element> is a perfect everyday staple. It offers a relaxed, intentional streetwear silhouette with standard, clean lines rather than loud graphics, making it ideal for a premium product listing.</p>",
+    "metaTitle": "Jack & Jones Men's Black Oversized Drop Shoulder T-Shirt | LOTAS",
+    "metaDescription": "Shop the Jack & Jones premium pure cotton black oversized t-shirt at LOTAS. Features a relaxed drop-shoulder fit perfect for everyday casual streetwear styling.",
+    "category": 1780375893051,
+    "subcategory": "",
+    "status": "active",
+    "images": [
+      "/uploads/1781244870862-jack_jones.webp"
+    ],
+    "specifications": [
+      "type:cotton",
+      "Color:Black:type:oversize"
+    ],
+    "createdAt": "2026-06-12T06:14:53.204Z",
+    "updatedAt": "2026-06-12T06:18:05.126Z"
+  },
+  {
+    "id": 1781268817335,
+    "title": "krish",
+    "slug": "krish",
+    "description": "<p>krish</p>",
+    "metaTitle": "",
+    "metaDescription": "",
+    "category": 2,
+    "subcategory": "",
+    "status": "active",
+    "images": [
+      "/uploads/1781244870862-jack_jones.webp"
+    ],
+    "specifications": [],
+    "createdAt": "2026-06-12T12:53:37.335Z",
+    "updatedAt": "2026-06-13T03:57:38.606Z"
+  },
+  {
+    "id": 1781325010824,
+    "title": "krishas",
+    "slug": "sdsssds",
+    "description": "<p>abc kdeierfsc</p>",
+    "metaTitle": "",
+    "metaDescription": "",
+    "category": 1781325047891,
+    "subcategory": "",
+    "status": "active",
+    "images": [],
+    "specifications": [],
+    "createdAt": "2026-06-13T04:30:10.824Z",
+    "updatedAt": "2026-06-13T05:39:52.498Z"
   }
 ]
