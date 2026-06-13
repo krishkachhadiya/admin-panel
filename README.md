@@ -216,7 +216,7 @@ public/
 
 ```text
 /api/login
-/api/users
+/api/Admins
 /api/roles
 /api/products
 /api/categories
