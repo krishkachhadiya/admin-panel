@@ -5,6 +5,12 @@
   --foreground: #171717;
 }
 
+:root {
+  --primary: #1D3549;
+  --secondary: #19535B;
+  --accent: #1CA16B;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
