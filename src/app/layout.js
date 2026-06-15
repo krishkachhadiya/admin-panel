@@ -72,7 +72,7 @@ export async function generateMetadata() {
 
         {
           url:
-            `${process.env.NEXT_PUBLIC_SITE_URL}${settings["OGImage"]}`,
+            `${process.env.NEXT_PUBLIC_SITE_URL}${settings["OG Image"]}`,
 
           width: 1200,
 
